@@ -11,10 +11,14 @@
 </div>
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=<?php echo $this->get('apiKey');?>"></script>
-<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=<?php echo $this->get('apiKey');?>"></script>
+<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+<link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+ 
+<script src="https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster.js"></script>
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css"/>
+<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css"/>
+
+
 
 <?php 
                     $city_array = [];
@@ -55,93 +59,57 @@
 <script type="text/javascript">
         window.onload = function() {
 
-        	 	
-        	
-        MQ.geocode().search([
-        		<?php 
-        		foreach ($out_array as $city) {
-        		          echo "'$city[zip_code] $city[address] $city[country_code]'"; echo ", ";
-        		      }
-        		?>
-             ])
-             
-            .on('success', function(e) {
-            	var js_array =<?php echo json_encode($out_array );?>;
-            	
-                var results = e.result,
-                	html = '',
-                    group = [],
-                    features,
-                    marker,
-                    result,
-                    name,
-                    city,
-                    latlng,
-                    prop,
-                    best,
-                    val,
-                    map,
-                    r,
-                    i;
+        	L.mapquest.key = '<?php echo $this->get('apiKey');?>';	 	
 
-                map = L.map('map', {
-                    layers: MQ.mapLayer()
+        	var geocoder = L.mapquest.geocoding();
+        	geocoder.geocode([<?php 
+            		foreach ($out_array as $city) {
+		          echo "'$city[address], $city[zip_code], $city[country_code]'"; echo ", ";
+		      }
+		?>], createMap);
+
+        	
+        	function createMap(error, response) {
+                // Initialize the Map
+                var map = L.mapquest.map('map', {
+                  layers: L.mapquest.tileLayer('map'),
+                  center: [0, 0],
+                  zoom: 12
                 });
 
-                 
-                for (i = 0; i < results.length; i++) {
-                    
-                    result = results[i].best;
-                    latlng = result.latlng;
-					
-                    html += '<div style="width:300px; float:left;">';
-            html += '<p><strong>Geocoded Location #' + (i + 1) + '</strong></p>';
+                // Generate the feature group containing markers from the geocoded locations
+                var featureGroup = generateMarkersFeatureGroup(response);
 
-            for (prop in result) {
-            	                
-            r = result[prop];
+                // Add markers to the map and zoom to the features
+                featureGroup.addTo(map);
+                map.fitBounds(featureGroup.getBounds());
+              }
+        	var js_array =<?php echo json_encode($out_array );?>;
+        	var markers = L.markerClusterGroup();
+        		
+              function generateMarkersFeatureGroup(response) {
+                var group = [];
+                for (var i = 0; i < response.results.length; i++) {
+                  var location = response.results[i].locations[0];
+                  var locationLatLng = location.latLng;
 
-            if (prop === 'displayLatLng') {
-            val = r.lat + ', ' + r.lng;
+                  // Create a marker for each location
+                  var title = js_array[i].names;
+                  var marker = L.marker(locationLatLng, {title: title, icon: L.mapquest.icons.marker()})
 
-            } else if (prop === 'mapUrl') {
-            val = '<br/><img src="' + r + '"/>';
+                    marker.bindPopup(title);
+                    markers.addLayer(marker);
 
-            } else {
-            val = r;
-            }
-
-            html += prop + ' : ' + val + '<br/>';
-            }
-
-            html += '</div>';
-						
-                       // create POI markers for each location
-                marker = L.marker([ latlng.lat, latlng.lng ])
-                			if(result.adminArea5.indexOf(js_array[i].city)){
-                				marker.bindPopup(js_array[i].names + ', ' + result.adminArea5 + ', ' + result.adminArea3);
-                
-
-                    group.push(marker);
-                			}
+                  group.push(markers);
                 }
+                return L.featureGroup(group);
+              }
+            }
 
-                // add POI markers to the map and zoom to the features
-                features = L.featureGroup(group).addTo(map);
-                map.fitBounds(features.getBounds());
-
-                // show location information
-                L.DomUtil.get('info').innerHTML = html;
-
-            });
 
         
-        }
-    </script>
+        
+</script>
 
 <div id='map' style='width: 100%; height:530px;'></div>
-<div id="info"></div>
-
-
-
 </form>
