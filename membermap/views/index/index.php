@@ -57,8 +57,8 @@
 <script type="text/javascript">
         window.onload = function() {
 
+        	 	
         	
-    		
         MQ.geocode().search([
         		<?php 
         		      foreach ($my_array as $city) {
@@ -66,13 +66,18 @@
         		      }
         		?>
              ])
+             
             .on('success', function(e) {
+            	var js_array =<?php echo json_encode($out_array );?>;
+            	
                 var results = e.result,
-                    html = '',
+                	html = '',
                     group = [],
                     features,
                     marker,
                     result,
+                    name,
+                    city,
                     latlng,
                     prop,
                     best,
@@ -85,13 +90,11 @@
                     layers: MQ.mapLayer()
                 });
 
+                 
                 for (i = 0; i < results.length; i++) {
+                    
                     result = results[i].best;
                     latlng = result.latlng;
-
-                    
-
-                    
 					
                     html += '<div style="width:300px; float:left;">';
             html += '<p><strong>Geocoded Location #' + (i + 1) + '</strong></p>';
@@ -114,13 +117,15 @@
             }
 
             html += '</div>';
-
+						
                        // create POI markers for each location
                 marker = L.marker([ latlng.lat, latlng.lng ])
-                            .bindPopup(result.adminArea5 + ', ' + result.adminArea3);
+                			if(result.adminArea5.indexOf(js_array[i].city)){
+                				marker.bindPopup(js_array[i].names + ', ' + result.adminArea5 + ', ' + result.adminArea3);
                 
 
                     group.push(marker);
+                			}
                 }
 
                 // add POI markers to the map and zoom to the features
