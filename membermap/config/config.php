@@ -47,7 +47,7 @@ class Config extends \Ilch\Config\Install
         return 'CREATE TABLE IF NOT EXISTS `[prefix]_membermap` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
             `user_id` INT(11) NULL DEFAULT NULL,
-            `zip_code` INT(11) NULL DEFAULT NULL,
+            `zip_code` VARCHAR(15) NULL DEFAULT NULL,
             `city` VARCHAR(100) NULL DEFAULT NULL,
             `country_code` VARCHAR(4) NULL DEFAULT NULL,
             PRIMARY KEY(`id`)

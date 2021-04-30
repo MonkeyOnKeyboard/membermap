@@ -9,6 +9,7 @@ namespace Modules\Membermap\Mappers;
 use \Modules\Membermap\Models\Gmap as GmapModel;
 use \Modules\User\Models\User as UserModel;
 
+
 class Gmap extends \Ilch\Mapper
 {
     
@@ -42,33 +43,59 @@ class Gmap extends \Ilch\Mapper
       }
       return $mmp;
   }  
-    
-  public function getUserLocations($where = []) {
-    
-      $resultArray = $this->db()->select()
-      ->fields(['id', 'name', 'city'])
-      ->from(['users'])
-      ->where($where)
-      ->order(['id' => 'ASC'])
+  
+  
+  public function getMmapByID($user_id)
+  {
+      $numbersRow = $this->db()->select('*')
+      ->from(['membermap'])
+      ->where(['user_id' => $user_id])
       ->execute()
-      ->fetchRows();
+      ->fetchAssoc();
       
-      if (empty($resultArray)) {
-          return null;
+      if (empty($numbersRow)) {
+          return [];
       }
       
-      $mlocations = [];
-      foreach ($resultArray as $memberRow) {
-          $model = new UserModel();
-          $model->setId($memberRow['id'])
-          ->setName($memberRow['name'])
-          ->setCity($memberRow['city']);
-          $mlocations[] = $model;
+      $PhonebookModel = new GmapModel();
+      $PhonebookModel ->setId($numbersRow['id'])
+      ->setUser_Id($numbersRow['user_id'])
+      ->setCity($numbersRow['city'])
+      ->setZip_code($numbersRow['zip_code'])
+      ->setCountry_code($numbersRow['country_code']);
+      
+      return $PhonebookModel;
+  }
+  
+  
+  
+  public function save(GmapModel $membermap)
+  {
+      $fields = [
+          'user_id' => $membermap->getUser_Id(),
+          'city' => $membermap->getCity(),
+          'zip_code' => $membermap->getZip_code(),
+          'country_code' => $membermap->getCountry_code()
+      ];
+      
+      $user_id = (int)$this->db()->select('user_id')
+      ->from('membermap')
+      ->where(['user_id' => $membermap->getUser_Id()])
+      ->execute()
+      ->fetchCell();
+      
+      if ($user_id) {
+          $this->db()->update('membermap')
+          ->values($fields)
+          ->where(['user_id' => $user_id])
+          ->execute();
+      } else {
+          $user_id = $this->db()->insert('membermap')
+          ->values($fields)
+          ->execute();
       }
       
-      return $mlocations;
-      
-      
-  }  
-    
+      return $id;
+  }
+
 }

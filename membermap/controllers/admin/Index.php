@@ -43,7 +43,7 @@ class Index extends \Ilch\Controller\Admin
             ->add($this->getTranslator()->trans('menuGmap'), ['action' => 'index']);
 
             
-            $this->getView()->set('memberlocations', $mapper->getMmp());
+            
             $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
         
     }

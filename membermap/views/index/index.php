@@ -1,17 +1,23 @@
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=<?php echo $this->get('apiKey');?>"></script>
-    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=<?php echo $this->get('apiKey');?>"></script>
-
 <form class="form-horizontal" method="POST" action="">
 <?=$this->getTokenField() ?>
 
+<div align="center">
+<br>
+<br>
+<span style=" font-size: 30px;"><a href="<?= $this->getUrl(['action' => 'treat'])?>" title="<?= $this->getTrans('mapEntry')?>"><?= $this->getTrans('mapEntry')?></a></span>
+<br>
+<br>
+            	
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=<?php echo $this->get('apiKey');?>"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=<?php echo $this->get('apiKey');?>"></script>
+
 <?php 
                     $city_array = [];
-                    $my_array = [];
-                    $names_array = [];
                     $out_array = [];
                     foreach ($this->get('memberlocations') as $location) {
                         
@@ -35,21 +41,13 @@
                                 
                             ];
                             
-                            array_push($my_array, $city_array);
-                            
-                            $names_array = [
-                                
-                                "names" => $name,
-                                "city" => $address,
-                                
-                            ];
-                            
-                            array_push($out_array, $names_array);
+                            array_push($out_array, $city_array);
+                           
                             
                         }
                     }
                     
-                    $js_json = json_encode($out_array, JSON_FORCE_OBJECT);
+                    
              		  ?>
 
 
@@ -61,7 +59,7 @@
         	
         MQ.geocode().search([
         		<?php 
-        		      foreach ($my_array as $city) {
+        		foreach ($out_array as $city) {
         		          echo "'$city[zip_code] $city[address] $city[country_code]'"; echo ", ";
         		      }
         		?>
@@ -140,15 +138,7 @@
         
         }
     </script>
-<?php 
 
-echo "<hr>";
-echo "<pre>";
-print_r($js_json);
-echo "</pre>";
-echo "<hr>";
-
-?>
 <div id='map' style='width: 100%; height:530px;'></div>
 <div id="info"></div>
 
