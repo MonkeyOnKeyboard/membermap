@@ -1,4 +1,4 @@
-<form method="POST" class="form-horizontal" action="">
+<form method="POST" class="form-horizontal">
     <?=$this->getTokenField() ?>
     <div class="alert alert-info">
         <?= $this->getTrans('getyourkeys', '<a href="https://developer.mapquest.com/" target="_blank">https://developer.mapquest.com/</a>') ?>
@@ -11,7 +11,6 @@
             <input type="text" class="form-control" id="apiKey" name="apiKey" value="<?=$this->get('apiKey') ?>" placeholder="API-Key">
         </div>
     </div>
-    
 
     <?=$this->getSaveBar(); ?>
 </form>

@@ -8,92 +8,179 @@ namespace Modules\Membermap\Models;
 
 class Gmap extends \Ilch\Model
 {
-    
+    /**
+     * ID.
+     *
+     * @var int
+     */
     protected $id;
+
+    /**
+     * User ID.
+     *
+     * @var int
+     */
     protected $user_id;
+
+    /**
+     * Username.
+     *
+     * @var string
+     */
     protected $name;
+
+    /**
+     * City.
+     *
+     * @var string
+     */
     protected $city;
+
+    /**
+     * Zip Code.
+     *
+     * @var string
+     */
     protected $zip_code;
+
+    /**
+     * Country Code.
+     *
+     * @var string
+     */
     protected $country_code;
-    
-    
-    public function setId($id)
+
+
+
+    /**
+     * Set ID.
+     *
+     * @param int
+     * @return $this
+     */
+    public function setId(int $id)
     {
-        $this->id = $id;
-        
+        $this->id = (int) $id;
         return $this;
     }
-    
+    /**
+     * Get ID.
+     *
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
-    
-    
-    
-    public function setUser_Id($user_id)
+
+    /**
+     * Set User ID.
+     *
+     * @param int
+     * @return $this
+     */
+    public function setUser_Id(int $user_id)
     {
-        $this->user_id = $user_id;
+        $this->user_id = (int) $user_id;
         
         return $this;
     }
-    
+    /**
+     * Get User ID.
+     *
+     * @return int
+     */
     public function getUser_Id()
     {
         return $this->user_id;
     }
-    
-    
-    public function setName($name)
+
+    /**
+     * Set Username.
+     *
+     * @param string
+     * @return $this
+     */
+    public function setName(string $name)
     {
         $this->name = $name;
         
         return $this;
     }
-    
+    /**
+     * Get Username.
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
-    
-    public function setCity($city)
+
+    /**
+     * Set City.
+     *
+     * @param string
+     * @return $this
+     */
+    public function setCity(string $city)
     {
         $this->city = $city;
         
         return $this;
     }
-    
+    /**
+     * Get City.
+     *
+     * @return string
+     */
     public function getCity()
     {
         return $this->city;
     }
-    
-    
-    public function setZip_code($zip_code)
+
+    /**
+     * Set Zip Code.
+     *
+     * @param string
+     * @return $this
+     */
+    public function setZip_code(string $zip_code)
     {
         $this->zip_code = $zip_code;
         
         return $this;
     }
-    
+    /**
+     * Get Zip Code.
+     *
+     * @return string
+     */
     public function getZip_code()
     {
         return $this->zip_code;
     }
-    
-    
-    
-    public function setCountry_code($country_code)
+
+    /**
+     * Set Country Code.
+     *
+     * @param string
+     * @return $this
+     */
+    public function setCountry_code(string $country_code)
     {
         $this->country_code = $country_code;
         
         return $this;
     }
-    
+    /**
+     * Get Country Code.
+     *
+     * @return string
+     */
     public function getCountry_code()
     {
         return $this->country_code;
     }
-    
     
 }

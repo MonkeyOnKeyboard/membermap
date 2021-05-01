@@ -31,8 +31,8 @@ class Settings extends \Ilch\Controller\Admin
     public function indexAction()
     {
         $this->getLayout()->getAdminHmenu()
-            ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
-            ->add($this->getTranslator()->trans('settings'), ['action' => 'index']);
+                ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
+                ->add($this->getTranslator()->trans('settings'), ['controller' => 'settings', 'action' => 'index']);
 
         if ($this->getRequest()->isPost()) {
             $this->getConfig()->set('map_apikey', $this->getRequest()->getPost('apiKey'));

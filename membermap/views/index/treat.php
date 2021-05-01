@@ -1,11 +1,10 @@
-
-<?php $membermap = $this->get('membermap'); ?>
-
-<h1><?=($this->get('membermap') != '') ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
+<?php
+$membermap = $this->get('membermap');
+?>
+<h1><?=($membermap->getCity()) ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
 <form role="form" class="form-horizontal" method="POST">
     <?=$this->getTokenField() ?>
-    <div class="form-group">
-
+    
     <div class="form-group <?=$this->validation()->hasError('city') ? 'has-error' : '' ?>">
         <label for="city" class="col-lg-2 control-label">
             <?=$this->getTrans('city') ?>
@@ -15,7 +14,7 @@
                    type="text"
                    id="city"
                    name="city"
-                   value="<?php if ($membermap != '') { echo $this->escape($membermap->getCity()); } ?>" />
+                   value="<?=$this->escape($this->originalInput('city', $membermap->getCity())) ?>" />
         </div>
     </div>
     <div class="form-group <?=$this->validation()->hasError('zip_code') ? 'has-error' : '' ?>">
@@ -27,7 +26,7 @@
                    type="text"
                    id="zip_code"
                    name="zip_code"
-                   value="<?php if ($membermap != '') { echo $this->escape($membermap->getZip_code()); } ?>" />
+                   value="<?=$this->escape($this->originalInput('zip_code', $membermap->getZip_code())) ?>" />
         </div>
     </div>
         <div class="form-group <?=$this->validation()->hasError('country_code') ? 'has-error' : '' ?>">
@@ -39,10 +38,10 @@
                    type="text"
                    id="country_code"
                    name="country_code"
-                   value="<?php if ($membermap != '') { echo $this->escape($membermap->getCountry_code()); } ?>" />
+                   value="<?=$this->escape($this->originalInput('country_code', $membermap->getCountry_code())) ?>" />
         </div>
     </div>
     
 
-    <?=($membermap != '') ? $this->getSaveBar('updateButton') : $this->getSaveBar('addButton') ?>
+    <?=($membermap) ? $this->getSaveBar('updateButton') : $this->getSaveBar('addButton') ?>
 </form>

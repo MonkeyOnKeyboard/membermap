@@ -17,7 +17,6 @@ class Index extends \Ilch\Controller\Admin
                 'active' => true,
                 'icon' => 'fas fa-map-marked-alt',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index']),
-                
             ],
             [
                 'name' => 'settings',
@@ -39,29 +38,24 @@ class Index extends \Ilch\Controller\Admin
         $mapper = new GmapMapper();
 
         $this->getLayout()->getAdminHmenu()
-            ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
-            ->add($this->getTranslator()->trans('menuGmap'), ['action' => 'index']);
+                ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
+                ->add($this->getTranslator()->trans('menuGmap'), ['controller' => 'index', 'action' => 'index']);
 
-            
-            $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
-            
-        
+        $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
     }
-    
-    
+
     public function delAction()
     {
         if ($this->getRequest()->isSecure()) {
             $mapMapper = new GmapMapper();
             $mapMapper->delete($this->getRequest()->getParam('id'));
-            
+
             $this->redirect()
-            ->withMessage('deleteSuccess')
-            ->to(['action' => 'index']);
+                ->withMessage('deleteSuccess')
+                ->to(['action' => 'index']);
         }
-        
+
         $this->redirect(['action' => 'index']);
     }
 
-    
 }
