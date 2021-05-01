@@ -65,7 +65,7 @@
                 var map = L.mapquest.map('map', {
                   layers: L.mapquest.tileLayer('map'),
                   center: [0, 0],
-                  zoom: 12
+                  zoom: 6
                 });
 
                 // Generate the feature group containing markers from the geocoded locations
