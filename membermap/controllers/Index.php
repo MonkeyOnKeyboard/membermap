@@ -14,13 +14,23 @@ class Index extends \Ilch\Controller\Frontend
         $this->getLayout()->getHmenu()
             ->add($this->getTranslator()->trans('menuGmap'), ['action' => 'index']);
 
-            $mapper = new GmapMapper();
             
             
-            $this->getView()->set('memberlocations', $mapper->getMmp());
-            $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
     }
     
+    
+    public function mapAction()
+    {
+        
+        $this->getLayout()->getHmenu()
+        ->add($this->getTranslator()->trans('menuGmap'), ['action' => 'map']);
+        
+        $mapper = new GmapMapper();
+        
+        
+        $this->getView()->set('memberlocations', $mapper->getMmp());
+        $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
+    }
     
     
     public function treatAction()
