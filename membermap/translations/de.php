@@ -17,6 +17,7 @@ return [
     'country_code'  => 'L&auml;nderk&uuml;rzel eintragen',
     'updateButton'  => '&Auml;ndern',
     'addButton'     => 'Eintragen',
+    'noEntrys'      => 'keine Eintragungen',
     
     
 ];

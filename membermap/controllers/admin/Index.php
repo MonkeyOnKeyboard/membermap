@@ -43,9 +43,24 @@ class Index extends \Ilch\Controller\Admin
             ->add($this->getTranslator()->trans('menuGmap'), ['action' => 'index']);
 
             
+            $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
             
-            $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
         
+    }
+    
+    
+    public function delAction()
+    {
+        if ($this->getRequest()->isSecure()) {
+            $mapMapper = new GmapMapper();
+            $mapMapper->delete($this->getRequest()->getParam('id'));
+            
+            $this->redirect()
+            ->withMessage('deleteSuccess')
+            ->to(['action' => 'index']);
+        }
+        
+        $this->redirect(['action' => 'index']);
     }
 
     
