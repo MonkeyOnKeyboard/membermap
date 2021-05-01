@@ -43,8 +43,10 @@ class Index extends \Ilch\Controller\Frontend
             $user_id = '';
         }
         
-        $this->getView()->set('memberEntry', $gmapMapper->getMmapByID($user_id));
-                
+        if ($gmapMapper->getMmp() != ''){
+        $this->getView()->set('membermap', $gmapMapper->getMmapByID($user_id));
+        }
+                        
         if ($this->getRequest()->isPost()) {
             $validation = Validation::create($this->getRequest()->getPost(), [
                 'city' => 'required',
@@ -54,14 +56,16 @@ class Index extends \Ilch\Controller\Frontend
             
                            
                 if ($validation->isValid()) {
+                    
+                    
+                    
                     $gmapModel = new GmapModel();
-                    $gmapModel->setUser_Id($user_id);
-                    
-                    
-                    
-                    $gmapModel->setCity($this->getRequest()->getPost('city'))
+                    $gmapModel
+                    ->setUser_Id($user_id)
+                    ->setCity($this->getRequest()->getPost('city'))
                     ->setZip_code($this->getRequest()->getPost('zip_code'))
                     ->setCountry_code($this->getRequest()->getPost('country_code'));
+                    
                     $gmapMapper->save($gmapModel);
                     
                     $this->redirect()
@@ -69,6 +73,11 @@ class Index extends \Ilch\Controller\Frontend
                     ->to(['action' => 'index']);
                 }
                 
+                if ($this->getRequest()->getParam('id')) {
+                    $redirect = ['action' => 'treat', 'id' => $this->getRequest()->getParam('id')];
+                } else {
+                    $redirect = ['action' => 'treat'];
+                }
                 
             }
            

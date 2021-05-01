@@ -1,19 +1,11 @@
-<?php $membermap = $this->get('memberEntry'); ?>
 
-<h1><?=($membermap != '') ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
+<?php $membermap = $this->get('membermap'); ?>
+
+<h1><?=($this->get('membermap') != '') ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
 <form role="form" class="form-horizontal" method="POST">
     <?=$this->getTokenField() ?>
-    <div class="form-group" <?=$this->validation()->hasError('user_id') ? 'has-error' : '' ?>>
-        
-        <div class="col-lg-4">
+    <div class="form-group">
 
-            <input class="form-control"
-                   type="hidden"
-                   id="user_id"
-                   name="user_id"
-                   value="<?php if ($membermap != '') { echo $this->escape($membermap->getUser_id()); } ?>" />
-        </div>
-    </div>
     <div class="form-group <?=$this->validation()->hasError('city') ? 'has-error' : '' ?>">
         <label for="city" class="col-lg-2 control-label">
             <?=$this->getTrans('city') ?>
