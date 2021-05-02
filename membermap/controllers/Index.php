@@ -82,6 +82,23 @@ class Index extends \Ilch\Controller\Frontend
         }
 
     }
+    
+    public function delAction()
+    {
+        if ($this->getRequest()->isSecure()) {
+            $gmapMapper = new GmapMapper();
+            
+                       
+            $gmapMapper->deleteUser($this->getRequest()->getParam('user_id'));
+            
+            $this->redirect()
+            ->withMessage('deleteSuccess')
+            ->to(['action' => 'index']);
+        }
+        
+        $this->redirect(['action' => 'index']);
+    }
+    
 
 }
 

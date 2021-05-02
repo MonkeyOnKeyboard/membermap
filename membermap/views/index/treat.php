@@ -44,4 +44,7 @@ $membermap = $this->get('membermap');
     
 
     <?=($membermap) ? $this->getSaveBar('updateButton') : $this->getSaveBar('addButton') ?>
+    <br>
+    <br>
+    <?=$this->getDeleteIcon(['action' => 'del', 'user_id' => ($membermap)->getUser_id()])?>
 </form>
