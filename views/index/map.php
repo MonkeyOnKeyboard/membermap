@@ -1,3 +1,4 @@
+<?php if ($this->get('apiKey')) {?>
 <?php if ($this->get('memberlocations')) { ?>
 <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
 <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
@@ -90,3 +91,8 @@ foreach ($this->get('memberlocations') as $location) {
         <?=$this->getTrans('noEntrys') ?>
 </div>
 <?php } ?>
+<?php } else { ?>
+<div class="alert alert-danger">
+        <?=$this->getTrans('noApiKey') ?>
+</div>
+<?php }?>

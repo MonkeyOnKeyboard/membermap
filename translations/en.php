@@ -19,5 +19,6 @@ return [
     'addButton'     => 'Add',
     'noEntrys'      => 'no Entrys',
     'loginRequired' => 'You need to be registered to register .',
+    'noApiKey'      => 'Module is not set up. Please check API key!',
 
 ];

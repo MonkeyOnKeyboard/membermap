@@ -18,6 +18,7 @@ return [
     'updateButton'  => '&Auml;ndern',
     'addButton'     => 'Eintragen',
     'noEntrys'      => 'keine Eintragungen',
-    'loginRequired' => 'Sie müssen angemeldet sein, um sich einzutragen.',
+    'loginRequired' => 'Sie m&uuml;ssen angemeldet sein, um sich einzutragen.',
+    'noApiKey'      => 'Modul ist nicht eingerichtet. Bitte API Schl&uuml;ssel &uuml;berpr&uuml;fen!',
 
 ];
