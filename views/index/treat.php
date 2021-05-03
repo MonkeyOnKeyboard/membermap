@@ -43,8 +43,14 @@ $membermap = $this->get('membermap');
     </div>
     
 
-    <?=($membermap) ? $this->getSaveBar('updateButton') : $this->getSaveBar('addButton') ?>
-    <br>
-    <br>
-    <?=$this->getDeleteIcon(['action' => 'del', 'user_id' => ($membermap)->getUser_id()])?>
+    <?php
+    if ($membermap) {
+        echo $this->getSaveBar('updateButton');
+    ?>
+    <a href="<?=$this->getUrl(['action' => 'del', 'user_id' => ($membermap)->getUser_id()], null, true) ?>" class="btn btn-danger" role="button"><?=$this->getTrans('delete') ?></a>
+    <?php
+    } else {
+        echo $this->getSaveBar('addButton');
+    }
+    ?>
 </form>

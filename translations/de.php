@@ -9,7 +9,7 @@ return [
     'gmembermap'    => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'Um das folgende Feld auszuf&uuml;llen, musst du zun&auml;chst dich auf %s registrieren um einen API-Key zu erhalten.',
-    'mapEntry'      => 'Wohnort eintragen',
+    'mapEntry'      => 'Wohnort eintragen | &auml;ndern | l&ouml;schen',
     'mapView'       => 'Karte ansehen',
 
     'city'          => 'Stadt',
@@ -17,7 +17,8 @@ return [
     'country_code'  => 'L&auml;nderk&uuml;rzel eintragen',
     'updateButton'  => '&Auml;ndern',
     'addButton'     => 'Eintragen',
-    'noEntrys'      => 'keine Eintragungen',
+    'deleteButton'  => 'Eintrag l&ouml;schen',
+    'noEntrys'      => 'keine fehlerhaften Eintragungen',
     'loginRequired' => 'Sie m&uuml;ssen angemeldet sein, um sich einzutragen.',
     'noApiKey'      => 'Modul ist nicht eingerichtet. Bitte API Schl&uuml;ssel &uuml;berpr&uuml;fen!',
 
