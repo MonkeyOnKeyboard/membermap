@@ -25,16 +25,14 @@ foreach ($this->get('memberlocations') as $location) {
     }
 }
 ?>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
-<src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 
 <script type="text/javascript">
     function initialize() {
         var bounds = new google.maps.LatLngBounds();
         var geocoder = new google.maps.Geocoder();
         var mapOptions = {
-                zoom: 6,
+                zoom: 4,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 center: new google.maps.LatLng(51.1642292, 10.4541194)
             };
@@ -50,7 +48,7 @@ foreach ($this->get('memberlocations') as $location) {
         var markers=[];
         var markerCluster = new MarkerClusterer(map, markers, {
                 imagePath:
-                "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+                "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m",
             });
         for (var i = 0; i < locations.length; i++) {
 
