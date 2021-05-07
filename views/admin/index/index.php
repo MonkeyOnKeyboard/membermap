@@ -33,6 +33,6 @@
 </div>  
 <?php else: ?>  
 <div class="alert alert-danger">
-        <?=$this->getTrans('noEntrys') ?>
+        <?=$this->getTrans('nofailEntrys') ?>
 </div>
 <?php endif; ?>  
