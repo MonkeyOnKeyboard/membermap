@@ -34,8 +34,10 @@ $('[name="service"]').change(function () {
     if ($(this).val() == "1") {
         $('#apiKey').removeClass('hidden');
         $('#apikey_info_mapquest').removeClass('hidden');
+        $('#apikey_info_google').addClass('hidden');
     } else if ($(this).val() == "2") {
         $('#apiKey').removeClass('hidden');
+        $('#apikey_info_mapquest').addClass('hidden');
         $('#apikey_info_google').removeClass('hidden');
     } else {
         $('#apiKey').addClass('hidden');

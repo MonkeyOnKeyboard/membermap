@@ -2,6 +2,8 @@
 
 namespace Modules\Membermap\Controllers\Admin;
 
+use Ilch\Validation;
+
 class Settings extends \Ilch\Controller\Admin
 {
     public function init()
