@@ -6,9 +6,9 @@
 
 namespace Modules\Membermap\Mappers;
 
-use \Modules\Membermap\Models\Gmap as GmapModel;
+use \Modules\Membermap\Models\MemberMap as Model;
 
-class Gmap extends \Ilch\Mapper
+class MemberMap extends \Ilch\Mapper
 {
 
     /**
@@ -45,7 +45,7 @@ class Gmap extends \Ilch\Mapper
 
         $mmp = [];
         foreach ($resultArray as $mmpRow) {
-            $model = new GmapModel();
+            $model = new Model();
             $model->setId($mmpRow['id'])
                 ->setUser_Id($mmpRow['user_id'])
                 ->setName($mmpRow['name'] ?? '')
@@ -82,7 +82,7 @@ class Gmap extends \Ilch\Mapper
      * Gets the Entrie by Userid.
      *
      * @param int $user_id
-     * @return GmapModel|null
+     * @return Model|null
      */
     public function getMmapByID(int $user_id)
     {
@@ -98,19 +98,19 @@ class Gmap extends \Ilch\Mapper
     /**
      * Inserts or updates entry.
      *
-     * @param GmapModel $membermap
+     * @param Model $model
      * @return boolean|integer
      */
-    public function save(GmapModel $membermap)
+    public function save(Model $model)
     {
         $fields = [
-            'user_id' => $membermap->getUser_Id(),
-            'city' => $membermap->getCity(),
-            'zip_code' => $membermap->getZip_code(),
-            'country_code' => $membermap->getCountry_code()
+            'user_id' => $model->getUser_Id(),
+            'city' => $model->getCity(),
+            'zip_code' => $model->getZip_code(),
+            'country_code' => $model->getCountry_code()
         ];
 
-        $model = $this->getMmapByID($membermap->getUser_Id());
+        $model = $this->getMmapByID($model->getUser_Id());
 
         if ($model) {
             $user_id = $model->getUser_Id();
@@ -148,7 +148,7 @@ class Gmap extends \Ilch\Mapper
      */
     public function deleteUser(int $user_id)
     {
-        $this->db()->delete('membermap')
+        return $this->db()->delete('membermap')
             ->where(['user_id' => (int) $user_id])
             ->execute();
     }

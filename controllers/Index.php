@@ -2,8 +2,8 @@
 
 namespace Modules\Membermap\Controllers;
 
-use \Modules\Membermap\Mappers\Gmap as GmapMapper;
-use \Modules\Membermap\Models\Gmap as GmapModel;
+use \Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
+use \Modules\Membermap\Models\MemberMap as MemberMapModel;
 use Ilch\Validation;
 
 class Index extends \Ilch\Controller\Frontend
@@ -11,33 +11,40 @@ class Index extends \Ilch\Controller\Frontend
     public function indexAction()
     {
         $this->getLayout()->getTitle()
-            ->add($this->getTranslator()->trans('menuGmap'));
+            ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('menuGmap'), ['controller' => 'index', 'action' => 'index']);
+                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index']);
 
     }
 
     public function mapAction()
     {
         $this->getLayout()->getTitle()
-            ->add($this->getTranslator()->trans('menuGmap'));
+            ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('menuGmap'), ['controller' => 'index', 'action' => 'index'])
+                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
                 ->add($this->getTranslator()->trans('mapView'), ['controller' => 'index', 'action' => 'map']);
 
-        $mapper = new GmapMapper();
+        $mapper = new MemberMapMapper();
 
-
-        $this->getView()->set('memberlocations', $mapper->getMmp());
-        $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
+        $apiKey = (string)$this->getConfig()->get('map_apikey');
+        if ($apiKey) {
+            if ((int)$this->getConfig()->get('map_service') === 1) {
+                $this->getRequest()->setActionName('mapMapQuest');
+            } elseif ((int)$this->getConfig()->get('map_service') === 2) {
+                $this->getRequest()->setActionName('mapGoogle');
+            }
+            $this->getView()->set('memberlocations', $mapper->getMmp());
+        }
+        $this->getView()->set('apiKey', $apiKey);
     }
 
     public function treatAction()
     {
         $this->getLayout()->getTitle()
-            ->add($this->getTranslator()->trans('menuGmap'));
+            ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('menuGmap'), ['controller' => 'index', 'action' => 'index'])
+                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
                 ->add($this->getTranslator()->trans('mapEntry'), ['controller' => 'index', 'action' => 'treat']);
 
         if (!$this->getUser()) {
@@ -46,14 +53,14 @@ class Index extends \Ilch\Controller\Frontend
                 ->to(['controller' => 'index', 'action' => 'index']);
         }
 
-        $gmapMapper = new GmapMapper();
+        $mapper = new MemberMapMapper();
 
-        $gmapModel = $gmapMapper->getMmapByID($this->getUser()->getId());
-        if (!$gmapModel) {
-            $gmapModel = new GmapModel();
-            $gmapModel->setUser_Id($this->getUser()->getId());
+        $model = $mapper->getMmapByID($this->getUser()->getId());
+        if (!$model) {
+            $model = new MemberMapModel();
+            $model->setUser_Id($this->getUser()->getId());
         }
-        $this->getView()->set('membermap', $gmapModel);
+        $this->getView()->set('membermap', $model);
 
         if ($this->getRequest()->isPost() ) {
             $validation = Validation::create($this->getRequest()->getPost(), [
@@ -63,11 +70,11 @@ class Index extends \Ilch\Controller\Frontend
             ]);
 
             if ($validation->isValid()) {
-                $gmapModel->setCity($this->getRequest()->getPost('city'))
+                $model->setCity($this->getRequest()->getPost('city'))
                     ->setZip_code($this->getRequest()->getPost('zip_code'))
                     ->setCountry_code($this->getRequest()->getPost('country_code'));
 
-                $gmapMapper->save($gmapModel);
+                $mapper->save($model);
 
                 $this->redirect()
                     ->withMessage('saveSuccess')
@@ -80,25 +87,21 @@ class Index extends \Ilch\Controller\Frontend
                 ->withErrors($validation->getErrorBag())
                 ->to(['action' => 'treat']);
         }
-
     }
-    
+
     public function delAction()
     {
         if ($this->getRequest()->isSecure()) {
-            $gmapMapper = new GmapMapper();
-            
-                       
-            $gmapMapper->deleteUser($this->getRequest()->getParam('user_id'));
-            
+            $mapper = new MemberMapMapper();
+
+            $mapper->deleteUser($this->getRequest()->getParam('user_id'));
+
             $this->redirect()
             ->withMessage('deleteSuccess')
             ->to(['action' => 'index']);
         }
-        
+
         $this->redirect(['action' => 'index']);
     }
-    
-
 }
 

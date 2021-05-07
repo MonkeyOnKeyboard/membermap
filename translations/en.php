@@ -5,8 +5,8 @@
  */
 
 return [
-    'menuGmap'      => 'Overview map',
-    'gmembermap'    => 'Membermap',
+    'menuMemberMap' => 'Overview map',
+    'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'To fill out the following field, you must first register on %s in order to receive an API key.',
     'mapEntry'      => 'Enter, Change or Delete your place of residence',
@@ -21,6 +21,8 @@ return [
     'nofailEntrys'  => 'no Entrys with Errors',
     'noEntrys'      => 'no Entrys',
     'loginRequired' => 'You need to be registered to register .',
-    'noApiKey'      => 'Module is not set up. Please check API key!',
+    'pleaseselect'  => 'Please select',
+    'noApiKey'      => 'Please check API key!',
+    'noMap'         => 'Module is not set up.',
 
 ];

@@ -8,7 +8,7 @@ class Settings extends \Ilch\Controller\Admin
     {
         $items = [
             [
-                'name' => 'menuGmap',
+                'name' => 'menuMemberMap',
                 'active' => false,
                 'icon' => 'fas fa-map-marked-alt',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index'])
@@ -23,7 +23,7 @@ class Settings extends \Ilch\Controller\Admin
 
         $this->getLayout()->addMenu
         (
-            'gmembermap',
+            'membermap',
             $items
         );
     }
@@ -31,17 +31,32 @@ class Settings extends \Ilch\Controller\Admin
     public function indexAction()
     {
         $this->getLayout()->getAdminHmenu()
-                ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
+                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
                 ->add($this->getTranslator()->trans('settings'), ['controller' => 'settings', 'action' => 'index']);
 
-        if ($this->getRequest()->isPost()) {
-            $this->getConfig()->set('map_apikey', $this->getRequest()->getPost('apiKey'));
+        if ($this->getRequest()->isPost() ) {
+            $validation = Validation::create($this->getRequest()->getPost(), [
+                'service' => 'required|numeric|integer|min:1|max:2',
+                'apiKey' => 'required',
+            ]);
 
+            if ($validation->isValid()) {
+                $this->getConfig()->set('map_service', $this->getRequest()->getPost('service'));
+                $this->getConfig()->set('map_apikey', $this->getRequest()->getPost('apiKey'));
+
+                $this->redirect()
+                    ->withMessage('saveSuccess')
+                    ->to(['action' => 'index']);
+            }
+
+            $this->addMessage($validation->getErrorBag()->getErrorMessages(), 'danger', true);
             $this->redirect()
-                ->withMessage('saveSuccess')
+                ->withInput()
+                ->withErrors($validation->getErrorBag())
                 ->to(['action' => 'index']);
         }
 
+        $this->getView()->set('service', (string)$this->getConfig()->get('map_service'));
         $this->getView()->set('apiKey', (string)$this->getConfig()->get('map_apikey'));
     }
 }

@@ -6,7 +6,7 @@
 
 namespace Modules\Membermap\Models;
 
-class Gmap extends \Ilch\Model
+class MemberMap extends \Ilch\Model
 {
     /**
      * ID.

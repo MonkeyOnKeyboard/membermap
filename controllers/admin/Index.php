@@ -13,7 +13,7 @@ class Index extends \Ilch\Controller\Admin
     {
         $items = [
             [
-                'name' => 'menuGmap',
+                'name' => 'menuMemberMap',
                 'active' => true,
                 'icon' => 'fas fa-map-marked-alt',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index']),
@@ -28,7 +28,7 @@ class Index extends \Ilch\Controller\Admin
 
         $this->getLayout()->addMenu
         (
-            'gmembermap',
+            'membermap',
             $items
         );
     }
@@ -38,8 +38,7 @@ class Index extends \Ilch\Controller\Admin
         $mapper = new GmapMapper();
 
         $this->getLayout()->getAdminHmenu()
-                ->add($this->getTranslator()->trans('gmembermap'), ['controller' => 'index', 'action' => 'index'])
-                ->add($this->getTranslator()->trans('menuGmap'), ['controller' => 'index', 'action' => 'index']);
+                ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
 
         $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
     }

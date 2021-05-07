@@ -5,8 +5,8 @@
  */
 
 return [
-    'menuGmap'      => '&Uuml;bertsicht Map',
-    'gmembermap'    => 'Membermap',
+    'menuMemberMap' => '&Uuml;bertsicht Map',
+    'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'Um das folgende Feld auszuf&uuml;llen, musst du zun&auml;chst dich auf %s registrieren um einen API-Key zu erhalten.',
     'mapEntry'      => 'Wohnort eintragen | &auml;ndern | l&ouml;schen',
@@ -21,6 +21,8 @@ return [
     'nofailEntrys'  => 'keine fehlerhaften Eintragungen',
     'noEntrys'      => 'keine Eintragungen',
     'loginRequired' => 'Sie m&uuml;ssen angemeldet sein, um sich einzutragen.',
-    'noApiKey'      => 'Modul ist nicht eingerichtet. Bitte API Schl&uuml;ssel &uuml;berpr&uuml;fen!',
+    'pleaseselect'  => 'Bitte ausw&auml;hlen',
+    'noApiKey'      => 'Bitte API Schl&uuml;ssel &uuml;berpr&uuml;fen!',
+    'noMap'         => 'Modul ist nicht eingerichtet.',
 
 ];

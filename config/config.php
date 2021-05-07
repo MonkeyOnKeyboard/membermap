@@ -10,7 +10,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.0.0',
+        'version' => '1.1.0',
         'icon_small' => 'fa-map-marked-alt',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -33,15 +33,17 @@ class Config extends \Ilch\Config\Install
         $this->db()->queryMulti($this->getInstallSql());
         
         $databaseConfig = new \Ilch\Config\Database($this->db());
-        $databaseConfig->set('map_apikey', '');
+        $databaseConfig->set('map_service', 0)
+            ->set('map_apikey', '');
     }
 
     public function uninstall()
     {
         $this->db()->queryMulti('DROP TABLE `[prefix]_membermap`');
         $this->db()->queryMulti("DELETE FROM `[prefix]_config` WHERE `key` = 'map_apikey';");
+        $this->db()->queryMulti("DELETE FROM `[prefix]_config` WHERE `key` = 'map_service';");
     }
-    
+
     public function getInstallSql()
     {
         return 'CREATE TABLE IF NOT EXISTS `[prefix]_membermap` (
@@ -58,7 +60,9 @@ class Config extends \Ilch\Config\Install
     {
         switch ($installedVersion) {
             case "1.0.0":
-                
+                // Map-Service auswahl (1 = MapQuest, 2 = Google)
+                $databaseConfig = new \Ilch\Config\Database($this->db());
+                $databaseConfig->set('map_service', '1');
         }
     }
 }
