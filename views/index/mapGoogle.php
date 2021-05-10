@@ -6,11 +6,12 @@ foreach ($this->get('memberlocations') as $location) {
 
     if ($location->getCity() != "") {
         $name         =   $location->getName();
+        $userlink         =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
         $zip_code         =   $location->getZip_code();
         $country_code = $location->getCountry_code();
         if ($location->getStreet() != "") {
             $address			=	$location->getStreet().''.$location->getCity();;
-        }else {
+        }else{
         $address			=	$location->getCity();
         }
         $address			=	strtolower($address);
@@ -23,6 +24,7 @@ foreach ($this->get('memberlocations') as $location) {
             "zip_code" => $zip_code,
             "address" => $address,
             "country_code" => $country_code,
+            "user_link"   => $userlink,
         ];
 
         array_push($out_array, $city_array);
@@ -43,7 +45,7 @@ foreach ($this->get('memberlocations') as $location) {
 
         var locations = [<?php 
                 foreach ($out_array as $city) {
-                echo "['$city[names]', '$city[address] $city[zip_code] $city[country_code]'],";
+                echo "['$city[names]', '$city[address] $city[zip_code] $city[country_code]', '$city[user_link]'],";
                 }
                 ?>
             ];
@@ -64,7 +66,8 @@ foreach ($this->get('memberlocations') as $location) {
                         var marker = new google.maps.Marker({
                                 map: map,
                                 position: results[0].geometry.location,
-                                title: locations[i][0]
+                                title: locations[i][0],
+                        		url: locations[i][2]
                             });
                         bounds.extend(marker.getPosition());
                         map.fitBounds(bounds);
@@ -72,7 +75,7 @@ foreach ($this->get('memberlocations') as $location) {
                         google.maps.event.addListener(marker, 'click', (function(marker) {
 
                             return function() {
-                                    infowindow.setContent("<div id='infowindow-content'><h3>" + locations[i][0] + "</h3>" + results[0]['formatted_address'] + "</div>");
+                                    infowindow.setContent("<div id='infowindow-content'><a href='" + locations[i][2] + "' target='_blank'><h3>" + locations[i][0] + "</h3></a>" + results[0]['formatted_address'] + "</div>");
                                     infowindow.open(map, marker);
                                 }
 

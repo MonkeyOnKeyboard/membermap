@@ -17,7 +17,11 @@ foreach ($this->get('memberlocations') as $location) {
         $name         =   $location->getName();
         $zip_code         =   $location->getZip_code();
         $country_code = $location->getCountry_code();
-        $address			=	$location->getCity();
+        if ($location->getStreet() != "") {
+            $address			=	$location->getStreet().', '.$location->getCity();;
+        }else {
+            $address			=	$location->getCity();
+        }
         $address			=	strtolower($address);
         $address			=	str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $address );
         $address			=	preg_replace("/[^a-z0-9\_\s]/", "", $address);
