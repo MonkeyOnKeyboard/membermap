@@ -2,9 +2,7 @@
 
 namespace Modules\Membermap\Controllers\Admin;
 
-use \Modules\Membermap\Mappers\Gmap as GmapMapper;
-use \Modules\Membermap\Models\Gmap as GmapModel;
-use Ilch\Validation;
+use \Modules\Membermap\Mappers\MemberMap as GmapMapper;
 
 
 class Index extends \Ilch\Controller\Admin

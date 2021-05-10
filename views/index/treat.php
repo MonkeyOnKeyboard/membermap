@@ -5,6 +5,18 @@ $membermap = $this->get('membermap');
 <form role="form" class="form-horizontal" method="POST">
     <?=$this->getTokenField() ?>
     
+    <div class="form-group">
+        <label for="street" class="col-lg-2 control-label">
+            <?=$this->getTrans('street') ?>
+        </label>
+        <div class="col-lg-4">
+            <input class="form-control"
+                   type="text"
+                   id="street"
+                   name="street"
+                   value="<?=$this->escape($this->originalInput('street', $membermap->getStreet())) ?>" />
+        </div>
+    </div>
     <div class="form-group <?=$this->validation()->hasError('city') ? 'has-error' : '' ?>">
         <label for="city" class="col-lg-2 control-label">
             <?=$this->getTrans('city') ?>

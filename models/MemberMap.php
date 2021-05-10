@@ -28,6 +28,13 @@ class MemberMap extends \Ilch\Model
      * @var string
      */
     protected $name;
+    
+    /**
+     * Street.
+     *
+     * @var string
+     */
+    protected $street;
 
     /**
      * City.
@@ -63,6 +70,7 @@ class MemberMap extends \Ilch\Model
         $this->id = (int) $id;
         return $this;
     }
+    
     /**
      * Get ID.
      *
@@ -85,6 +93,7 @@ class MemberMap extends \Ilch\Model
         
         return $this;
     }
+    
     /**
      * Get User ID.
      *
@@ -107,6 +116,7 @@ class MemberMap extends \Ilch\Model
         
         return $this;
     }
+    
     /**
      * Get Username.
      *
@@ -115,6 +125,29 @@ class MemberMap extends \Ilch\Model
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set Street.
+     *
+     * @param string
+     * @return $this
+     */
+    public function setStreet(string $street)
+    {
+        $this->street = $street;
+        
+        return $this;
+    }
+    
+    /**
+     * Get Street.
+     *
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->street;
     }
 
     /**
@@ -129,6 +162,7 @@ class MemberMap extends \Ilch\Model
         
         return $this;
     }
+    
     /**
      * Get City.
      *
@@ -151,6 +185,7 @@ class MemberMap extends \Ilch\Model
         
         return $this;
     }
+    
     /**
      * Get Zip Code.
      *
@@ -173,6 +208,7 @@ class MemberMap extends \Ilch\Model
         
         return $this;
     }
+    
     /**
      * Get Country Code.
      *

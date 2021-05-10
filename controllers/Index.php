@@ -70,7 +70,8 @@ class Index extends \Ilch\Controller\Frontend
             ]);
 
             if ($validation->isValid()) {
-                $model->setCity($this->getRequest()->getPost('city'))
+                $model->setStreet($this->getRequest()->getPost('street'))
+                    ->setCity($this->getRequest()->getPost('city'))
                     ->setZip_code($this->getRequest()->getPost('zip_code'))
                     ->setCountry_code($this->getRequest()->getPost('country_code'));
 

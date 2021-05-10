@@ -10,7 +10,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.1.0',
+        'version' => '1.2.0',
         'icon_small' => 'fa-map-marked-alt',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -50,6 +50,7 @@ class Config extends \Ilch\Config\Install
             `id` INT(11) NOT NULL AUTO_INCREMENT,
             `user_id` INT(11) NULL DEFAULT NULL,
             `zip_code` VARCHAR(15) NULL DEFAULT NULL,
+            `street` VARCHAR(255) NULL DEFAULT NULL,
             `city` VARCHAR(100) NULL DEFAULT NULL,
             `country_code` VARCHAR(4) NULL DEFAULT NULL,
             PRIMARY KEY(`id`)
@@ -63,6 +64,10 @@ class Config extends \Ilch\Config\Install
                 // Map-Service auswahl (1 = MapQuest, 2 = Google)
                 $databaseConfig = new \Ilch\Config\Database($this->db());
                 $databaseConfig->set('map_service', '1');
+           
+            case "1.1.0":
+                // Add Colum street for optional Street entry
+                $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD COLUMN `street` VARCHAR(255) NULL DEFAULT NULL AFTER `zip_code`;');
         }
     }
 }

@@ -22,7 +22,7 @@ class MemberMap extends \Ilch\Mapper
     public function getEntriesBy($where = [], $orderBy = ['g.id' => 'ASC'], $pagination = null)
     {
         $select = $this->db()->select()
-            ->fields(['g.id', 'g.user_id', 'g.city', 'g.zip_code', 'g.country_code'])
+            ->fields(['g.id', 'g.user_id', 'g.street', 'g.city', 'g.zip_code', 'g.country_code'])
             ->from(['g' => 'membermap'])
             ->join(['u' => 'users'], 'u.id = g.user_id', 'LEFT', ['u.name'])
             ->where($where)
@@ -49,6 +49,7 @@ class MemberMap extends \Ilch\Mapper
             $model->setId($mmpRow['id'])
                 ->setUser_Id($mmpRow['user_id'])
                 ->setName($mmpRow['name'] ?? '')
+                ->setStreet($mmpRow['street'] ?? '')
                 ->setCity($mmpRow['city'])
                 ->setZip_code($mmpRow['zip_code'])
                 ->setCountry_code($mmpRow['country_code']);
@@ -105,6 +106,7 @@ class MemberMap extends \Ilch\Mapper
     {
         $fields = [
             'user_id' => $model->getUser_Id(),
+            'street' => $model->getStreet(),
             'city' => $model->getCity(),
             'zip_code' => $model->getZip_code(),
             'country_code' => $model->getCountry_code()
