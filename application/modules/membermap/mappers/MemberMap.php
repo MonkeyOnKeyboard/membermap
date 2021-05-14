@@ -1,8 +1,8 @@
 <?php
 /**
-* @copyright Ilch 2.0
-* @package ilch
-*/
+ * @copyright MonkeyOnKeyboard
+ * @package ilch
+ */
 
 namespace Modules\Membermap\Mappers;
 
@@ -57,7 +57,7 @@ class MemberMap extends \Ilch\Mapper
         }
         return $mmp;
     }
-    
+
     /**
      * Gets the NOT Empty Entries.
      *
@@ -68,7 +68,7 @@ class MemberMap extends \Ilch\Mapper
     {
         return $this->getEntriesBy(['u.id IS NOT' => null]);
     }  
-    
+
     /**
      * Gets the Empty Entries.
      *

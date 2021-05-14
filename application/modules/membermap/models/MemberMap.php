@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Ilch 2.0
+ * @copyright MonkeyOnKeyboard
  * @package ilch
  */
 
@@ -28,9 +28,11 @@ class MemberMap extends \Ilch\Model
      * @var string
      */
     protected $name;
-    
+
     /**
      * Street.
+     *
+     * @since Version 1.2.0
      *
      * @var string
      */
@@ -70,7 +72,7 @@ class MemberMap extends \Ilch\Model
         $this->id = (int) $id;
         return $this;
     }
-    
+
     /**
      * Get ID.
      *
@@ -90,10 +92,9 @@ class MemberMap extends \Ilch\Model
     public function setUser_Id(int $user_id)
     {
         $this->user_id = (int) $user_id;
-        
         return $this;
     }
-    
+
     /**
      * Get User ID.
      *
@@ -113,10 +114,9 @@ class MemberMap extends \Ilch\Model
     public function setName(string $name)
     {
         $this->name = $name;
-        
         return $this;
     }
-    
+
     /**
      * Get Username.
      *
@@ -126,9 +126,11 @@ class MemberMap extends \Ilch\Model
     {
         return $this->name;
     }
-    
+
     /**
      * Set Street.
+     *
+     * @since Version 1.2.0
      *
      * @param string
      * @return $this
@@ -136,12 +138,13 @@ class MemberMap extends \Ilch\Model
     public function setStreet(string $street)
     {
         $this->street = $street;
-        
         return $this;
     }
-    
+
     /**
      * Get Street.
+     *
+     * @since Version 1.2.0
      *
      * @return string
      */
@@ -159,10 +162,9 @@ class MemberMap extends \Ilch\Model
     public function setCity(string $city)
     {
         $this->city = $city;
-        
         return $this;
     }
-    
+
     /**
      * Get City.
      *
@@ -182,10 +184,9 @@ class MemberMap extends \Ilch\Model
     public function setZip_code(string $zip_code)
     {
         $this->zip_code = $zip_code;
-        
         return $this;
     }
-    
+
     /**
      * Get Zip Code.
      *
@@ -205,10 +206,9 @@ class MemberMap extends \Ilch\Model
     public function setCountry_code(string $country_code)
     {
         $this->country_code = $country_code;
-        
         return $this;
     }
-    
+
     /**
      * Get Country Code.
      *
@@ -218,5 +218,5 @@ class MemberMap extends \Ilch\Model
     {
         return $this->country_code;
     }
-    
+
 }

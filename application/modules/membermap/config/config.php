@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Ilch 2.0
+ * @copyright MonkeyOnKeyboard
  * @package ilch
  */
 
@@ -8,6 +8,9 @@ namespace Modules\Membermap\Config;
 
 class Config extends \Ilch\Config\Install
 {
+    /**
+     * @todo description ändern / erweitern
+     */
     public $config = [
         'key' => 'membermap',
         'version' => '1.2.0',
@@ -19,11 +22,11 @@ class Config extends \Ilch\Config\Install
                 'description' => 'Eine Membermap.',
             ],
             'en_EN' => [
-                'name' => 'membermap',
-                'description' => 'A membermap',
+                'name' => 'Membermap',
+                'description' => 'A Membermap.',
             ],
         ],
-        
+
         'ilchCore' => '2.1.42',
         'phpVersion' => '7.0'
     ];
@@ -31,7 +34,7 @@ class Config extends \Ilch\Config\Install
     public function install()
     {
         $this->db()->queryMulti($this->getInstallSql());
-        
+
         $databaseConfig = new \Ilch\Config\Database($this->db());
         $databaseConfig->set('map_service', 0)
             ->set('map_apikey', '');
@@ -64,10 +67,14 @@ class Config extends \Ilch\Config\Install
                 // Map-Service auswahl (1 = MapQuest, 2 = Google)
                 $databaseConfig = new \Ilch\Config\Database($this->db());
                 $databaseConfig->set('map_service', '1');
-           
             case "1.1.0":
                 // Add Colum street for optional Street entry
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD COLUMN `street` VARCHAR(255) NULL DEFAULT NULL AFTER `zip_code`;');
+/*             case "1.2.0":
+                // Update description
+                foreach($this->config['languages'] as $key => $value) {
+                    $this->db()->query(sprintf("UPDATE `[prefix]_modules_content` SET `name` = '%s', `description` = '%s' WHERE `key` = 'membermap' AND `locale` = '%s';", $value['name'], $value['description'], $key));
+                } */
         }
     }
 }

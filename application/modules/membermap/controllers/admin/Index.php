@@ -1,9 +1,12 @@
 <?php
+/**
+ * @copyright MonkeyOnKeyboard
+ * @package ilch
+ */
 
 namespace Modules\Membermap\Controllers\Admin;
 
 use \Modules\Membermap\Mappers\MemberMap as GmapMapper;
-
 
 class Index extends \Ilch\Controller\Admin
 {

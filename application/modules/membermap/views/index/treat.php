@@ -4,7 +4,7 @@ $membermap = $this->get('membermap');
 <h1><?=($membermap->getCity()) ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
 <form role="form" class="form-horizontal" method="POST">
     <?=$this->getTokenField() ?>
-    
+
     <div class="form-group">
         <label for="street" class="col-lg-2 control-label">
             <?=$this->getTrans('street') ?>
@@ -53,7 +53,6 @@ $membermap = $this->get('membermap');
                    value="<?=$this->escape($this->originalInput('country_code', $membermap->getCountry_code())) ?>" />
         </div>
     </div>
-    
 
     <?php
     if ($membermap) {

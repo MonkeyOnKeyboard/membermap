@@ -11,7 +11,7 @@
         <?php } ?>
         <span style=" font-size: 30px;">
             <a href="<?= $this->getUrl(['action' => 'map'])?>" title="<?= $this->getTrans('mapView')?>"><?= $this->getTrans('mapView')?></a>
-        </span>            	
+        </span>
     </div>
 
 </form>

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @copyright MonkeyOnKeyboard
+ * @package ilch
+ */
 
 namespace Modules\Membermap\Controllers;
 
@@ -62,7 +66,7 @@ class Index extends \Ilch\Controller\Frontend
         }
         $this->getView()->set('membermap', $model);
 
-        if ($this->getRequest()->isPost() ) {
+        if ($this->getRequest()->isPost()) {
             $validation = Validation::create($this->getRequest()->getPost(), [
                 'city' => 'required',
                 'zip_code' => 'required',

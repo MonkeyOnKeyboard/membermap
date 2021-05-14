@@ -3,7 +3,6 @@
 $city_array = [];
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
-
     if ($location->getCity() != "") {
         $name         =   $location->getName();
         $userlink         =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
@@ -11,8 +10,8 @@ foreach ($this->get('memberlocations') as $location) {
         $country_code = $location->getCountry_code();
         if ($location->getStreet() != "") {
             $address			=	$location->getStreet().''.$location->getCity();;
-        }else{
-        $address			=	$location->getCity();
+        } else {
+            $address			=	$location->getCity();
         }
         $address			=	strtolower($address);
         $address			=	str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $address );
@@ -45,7 +44,7 @@ foreach ($this->get('memberlocations') as $location) {
 
         var locations = [<?php 
                 foreach ($out_array as $city) {
-                echo "['$city[names]', '$city[address] $city[zip_code] $city[country_code]', '$city[user_link]'],";
+                    echo "['$city[names]', '$city[address] $city[zip_code] $city[country_code]', '$city[user_link]'],";
                 }
                 ?>
             ];
@@ -97,6 +96,6 @@ foreach ($this->get('memberlocations') as $location) {
 </script>
 <?php } else { ?>
 <div class="alert alert-danger">
-        <?=$this->getTrans('noEntrys') ?>
+    <?=$this->getTrans('noEntrys') ?>
 </div>
 <?php } ?>

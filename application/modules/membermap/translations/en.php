@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Ilch 2.0
+ * @copyright MonkeyOnKeyboard
  * @package ilch
  */
 
@@ -11,7 +11,6 @@ return [
     'getyourkeys'   => 'To fill out the following field, you must first register on %s in order to receive an API key.',
     'mapEntry'      => 'Enter, Change or Delete your place of residence',
     'mapView'       => 'View Map',
-
     'street'        => 'Street name (optional)',
     'city'          => 'City',
     'zip_code'      => 'Post Code',

@@ -12,14 +12,13 @@
 $city_array = [];
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
-
     if ($location->getCity() != "") {
         $name         =   $location->getName();
         $zip_code         =   $location->getZip_code();
         $country_code = $location->getCountry_code();
         if ($location->getStreet() != "") {
             $address			=	$location->getStreet().', '.$location->getCity();;
-        }else {
+        } else {
             $address			=	$location->getCity();
         }
         $address			=	strtolower($address);
@@ -42,7 +41,7 @@ foreach ($this->get('memberlocations') as $location) {
 <script type="text/javascript">
     window.onload = function() {
 
-        L.mapquest.key = '<?php echo $this->get('apiKey');?>';	 	
+        L.mapquest.key = '<?php echo $this->get('apiKey');?>';
 
         var geocoder = L.mapquest.geocoding();
         geocoder.geocode([<?php 

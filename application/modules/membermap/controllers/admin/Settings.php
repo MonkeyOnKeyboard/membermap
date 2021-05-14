@@ -1,4 +1,8 @@
 <?php
+/**
+ * @copyright MonkeyOnKeyboard
+ * @package ilch
+ */
 
 namespace Modules\Membermap\Controllers\Admin;
 
