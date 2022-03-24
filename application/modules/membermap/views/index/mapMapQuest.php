@@ -1,95 +1,117 @@
 <?php if ($this->get('memberlocations')) { ?>
-<script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
-<link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
- 
-<script src="https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster.js"></script>
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css"/>
-<link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css"/>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
 
+
+
+<div id='map' style='width: 100%; height:530px;'></div>
 
 
 <?php 
 $city_array = [];
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
+    if ($location->getLat() != "")
+    {
+        
     if ($location->getCity() != "") {
         $name         =   $location->getName();
-        $zip_code         =   $location->getZip_code();
-        $country_code = $location->getCountry_code();
-        if ($location->getStreet() != "") {
-            $address			=	$location->getStreet().', '.$location->getCity();;
-        } else {
-            $address			=	$location->getCity();
-        }
-        $address			=	strtolower($address);
-        $address			=	str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $address );
-        $address			=	preg_replace("/[^a-z0-9\_\s]/", "", $address);
-        $address			=	str_replace( array(' ', '--'), array('-', '-'), $address );
+        $lat          =   $location->getLat();
+        $lng          =   $location->getLng();
 
         $city_array = [
             "names" => $name,
-            "zip_code" => $zip_code,
-            "address" => $address,
-            "country_code" => $country_code,
+            "lat" => $lat,
+            "lng" => $lng
         ];
 
         array_push($out_array, $city_array);
+        }
     }
 }
-
 ?>
-<script type="text/javascript">
-    window.onload = function() {
 
-        L.mapquest.key = '<?php echo $this->get('apiKey');?>';
 
-        var geocoder = L.mapquest.geocoding();
-        geocoder.geocode([<?php 
-            foreach ($out_array as $city) {
-              echo "'$city[address], $city[zip_code], $city[country_code]'"; echo ", ";
-          }
-        ?>], createMap);
+<script>
 
-        function createMap(error, response) {
-            // Initialize the Map
-            var map = L.mapquest.map('map', {
-                layers: L.mapquest.tileLayer('map'),
-                center: [0, 0],
-                zoom: 6
-            });
+var addressPoints = [
+	<?php 
+        foreach ($out_array as $city) {
+            echo "[$city[lat], $city[lng], '".$city["names"]."']"; echo ", ";
+      }
+    ?>
+	];
 
-            // Generate the feature group containing markers from the geocoded locations
-            var featureGroup = generateMarkersFeatureGroup(response);
+var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+  })
 
-            // Add markers to the map and zoom to the features
-            featureGroup.addTo(map);
-            map.fitBounds(featureGroup.getBounds());
-        }
-        var js_array =<?=json_encode($out_array); ?>;
-        var markers = L.markerClusterGroup();
+latlng = L.latLng(51, 9);
 
-        function generateMarkersFeatureGroup(response) {
-            var group = [];
-            for (var i = 0; i < response.results.length; i++) {
-                var location = response.results[i].locations[0];
-                var locationLatLng = location.latLng;
+var map = L.map('map', {center: latlng, zoom: 6, layers: [tiles], closePopupOnClick: false});
 
-                // Create a marker for each location
-                var title = js_array[i].names;
-                var marker = L.marker(locationLatLng, {title: title, icon: L.mapquest.icons.marker()})
+var markers = L.markerClusterGroup();
 
-                marker.bindPopup(title);
-                markers.addLayer(marker);
+for (var i = 0; i < addressPoints.length; i++) {
+  var a = addressPoints[i];
+  var title = a[2];
+  var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
+  marker.bindPopup(title, {autoClose: false, autoPan: false});
+  markers.addLayer(marker);
+}
 
-                group.push(markers);
-            }
-            return L.featureGroup(group);
-        }
+map.addLayer(markers);
+
+var bounds;
+var markersDisplayed = false;
+
+map.on('moveend zoomend', function(e) {
+  bounds = map.getBounds();
+  var zoom = map.getZoom();
+  if (zoom > 16) {
+    markers.eachLayer(function (layer) {
+      if (bounds.contains(layer.getLatLng())) {
+        markersDisplayed = true;
+        layer.openPopup();
+      }
+    });
     }
+  else if (markersDisplayed) {
+    markersDisplayed = false;
+    markers.eachLayer(function (layer) {
+      if (bounds.contains(layer.getLatLng())) {
+        layer.closePopup();
+      }
+    });
+  }
+});
+
+markers.on('clusterclick', function (e) {
+  bounds = map.getBounds();
+  var zoom = map.getZoom();
+  var childMarkers = e.layer.getAllChildMarkers();
+  if (zoom > 16) {
+    childMarkers.eachLayer(function (layer) {
+      if (bounds.contains(layer.getLatLng())) {
+        markersDisplayed = true;
+        layer.openPopup();
+      }
+    });
+  }
+});    
 </script>
-<div id='map' style='width: 100%; height:530px;'></div>
+
+
+
+
 <?php } else { ?>
 <div class="alert alert-danger">
         <?=$this->getTrans('noEntrys') ?>
 </div>
 <?php } ?>
+

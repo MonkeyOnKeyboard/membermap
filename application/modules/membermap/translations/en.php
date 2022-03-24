@@ -15,6 +15,10 @@ return [
     'city'          => 'City',
     'zip_code'      => 'Post Code',
     'country_code'  => 'Country Code',
+    'cc'            => 'Country Code',
+    'membername'    => 'Membername',
+    'lat'           => 'Lat',
+    'lng'           => 'Lng',
     'updateButton'  => 'Update',
     'addButton'     => 'Add',
     'deleteButton'  => 'Delete',
@@ -26,5 +30,7 @@ return [
     'noApiKey'      => 'Please check API key!',
     'noMap'         => 'Module is not set up.',
     'service'       => 'Service',
+    'enablemapquest' => 'If you want to use this Modul. Please enable MapQuest Service in Settings!'
+    
 
 ];

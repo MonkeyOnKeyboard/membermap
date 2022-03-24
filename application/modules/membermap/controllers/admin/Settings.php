@@ -20,6 +20,12 @@ class Settings extends \Ilch\Controller\Admin
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index'])
             ],
             [
+                'name' => 'menuAdressen',
+                'active' => false,
+                'icon' => 'fas fa-map-marked-alt',
+                'url' => $this->getLayout()->getUrl(['controller' => 'adressen', 'action' => 'index']),
+            ],
+            [
                 'name' => 'settings',
                 'active' => true,
                 'icon' => 'fas fa-cogs',

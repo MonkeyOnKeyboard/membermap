@@ -15,6 +15,10 @@ return [
     'city'          => 'Stadt',
     'zip_code'      => 'PLZ',
     'country_code'  => 'L&auml;nderk&uuml;rzel eintragen',
+    'cc'  => 'L&auml;nderk&uuml;rzel',
+    'membername'  => 'Membername',
+    'lat'  => 'Lat',
+    'lng'  => 'Lng',
     'updateButton'  => '&Auml;ndern',
     'addButton'     => 'Eintragen',
     'deleteButton'  => 'Eintrag l&ouml;schen',
@@ -26,5 +30,6 @@ return [
     'noApiKey'      => 'Bitte API Schl&uuml;ssel &uuml;berpr&uuml;fen!',
     'noMap'         => 'Modul ist nicht eingerichtet.',
     'service'       => 'Servicedienst w&auml;hlen',
+    'enablemapquest' => 'Um dieses Modul nutzen zu k&ouml;nnen, Akteviere zuerst den Mapservice MapQuest in den Einstellungen!'
 
 ];

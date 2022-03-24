@@ -13,7 +13,7 @@ class Config extends \Ilch\Config\Install
      */
     public $config = [
         'key' => 'membermap',
-        'version' => '1.2.0',
+        'version' => '1.3.0',
         'icon_small' => 'fa-map-marked-alt',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -56,6 +56,8 @@ class Config extends \Ilch\Config\Install
             `street` VARCHAR(255) NULL DEFAULT NULL,
             `city` VARCHAR(100) NULL DEFAULT NULL,
             `country_code` VARCHAR(4) NULL DEFAULT NULL,
+            `lat` VARCHAR(255) NULL DEFAULT NULL,
+            `lng` VARCHAR(255) NULL DEFAULT NULL,
             PRIMARY KEY(`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;';
     }
@@ -75,6 +77,9 @@ class Config extends \Ilch\Config\Install
                 foreach($this->config['languages'] as $key => $value) {
                     $this->db()->query(sprintf("UPDATE `[prefix]_modules_content` SET `name` = '%s', `description` = '%s' WHERE `key` = 'membermap' AND `locale` = '%s';", $value['name'], $value['description'], $key));
                 } */
+            case "1.3.0":
+                // Add Colum lat and lng for storing locations latLng
+                $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD COLUMN `lat` VARCHAR(255) NULL DEFAULT NULL AFTER `country_code`, ADD COLUMN `lng` VARCHAR(255) NULL DEFAULT NULL AFTER `lat`;');
         }
     }
 }

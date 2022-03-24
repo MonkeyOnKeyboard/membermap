@@ -58,6 +58,20 @@ class MemberMap extends \Ilch\Model
      * @var string
      */
     protected $country_code;
+    
+    /**
+     * lat.
+     *
+     * @var string
+     */
+    protected $lat;
+
+     /**
+     * lng.
+     *
+     * @var string
+     */
+    protected $lng;
 
 
 
@@ -217,6 +231,58 @@ class MemberMap extends \Ilch\Model
     public function getCountry_code()
     {
         return $this->country_code;
+    }
+    
+    /**
+     * Set lat.
+     *
+     * @since Version 1.3.0
+     *
+     * @param string
+     * @return $this
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+        return $this;
+    }
+    
+    /**
+     * Get lat.
+     *
+     * @since Version 1.3.0
+     *
+     * @return string
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+    
+    /**
+     * Set lng.
+     *
+     * @since Version 1.3.0
+     *
+     * @param string
+     * @return $this
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+        return $this;
+    }
+    
+    /**
+     * Get lng.
+     *
+     * @since Version 1.3.0
+     *
+     * @return string
+     */
+    public function getLng()
+    {
+        return $this->lng;
     }
 
 }

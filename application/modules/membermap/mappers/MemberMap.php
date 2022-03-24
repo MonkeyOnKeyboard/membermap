@@ -22,7 +22,7 @@ class MemberMap extends \Ilch\Mapper
     public function getEntriesBy($where = [], $orderBy = ['g.id' => 'ASC'], $pagination = null)
     {
         $select = $this->db()->select()
-            ->fields(['g.id', 'g.user_id', 'g.street', 'g.city', 'g.zip_code', 'g.country_code'])
+        ->fields(['g.id', 'g.user_id', 'g.street', 'g.city', 'g.zip_code', 'g.country_code', 'g.lat', 'g.lng'])
             ->from(['g' => 'membermap'])
             ->join(['u' => 'users'], 'u.id = g.user_id', 'LEFT', ['u.name'])
             ->where($where)
@@ -52,7 +52,9 @@ class MemberMap extends \Ilch\Mapper
                 ->setStreet($mmpRow['street'] ?? '')
                 ->setCity($mmpRow['city'])
                 ->setZip_code($mmpRow['zip_code'])
-                ->setCountry_code($mmpRow['country_code']);
+                ->setCountry_code($mmpRow['country_code'])
+                ->setLat($mmpRow['lat'])
+                ->setLng($mmpRow['lng']);
             $mmp[] = $model;
         }
         return $mmp;
@@ -129,6 +131,38 @@ class MemberMap extends \Ilch\Mapper
         return $user_id;
     }
 
+    
+    /**
+     * Inserts or updates entry.
+     *
+     * @param Model $model
+     * @return boolean|integer
+     */
+    public function saveLatLng(Model $model)
+    {
+        $fields = [
+            'lat' => $model->getLat(),
+            'lng' => $model->getLng()
+        ];
+        
+        $model = $this->getMmapByID($model->getUser_Id());
+        
+        if ($model) {
+            $user_id = $model->getUser_Id();
+            $this->db()->update('membermap')
+            ->values($fields)
+            ->where(['user_id' => $user_id])
+            ->execute();
+        } else {
+            $user_id = $this->db()->insert('membermap')
+            ->values($fields)
+            ->execute();
+        }
+        
+        return $user_id;
+    }
+    
+    
     /**
      * Deletes the entry.
      *
