@@ -14,16 +14,20 @@
 <?php 
 $city_array = [];
 $out_array = [];
+
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getLat() != "")
     {
         
     if ($location->getCity() != "") {
+        
+        $userlink     =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
         $name         =   $location->getName();
         $lat          =   $location->getLat();
         $lng          =   $location->getLng();
 
         $city_array = [
+            "user_link"   => $userlink,
             "names" => $name,
             "lat" => $lat,
             "lng" => $lng
@@ -37,11 +41,24 @@ foreach ($this->get('memberlocations') as $location) {
 
 
 <script>
+function openPopUp(id, clusterId){
+    map.closePopup(); //which will close all popups
+    map.eachLayer(function(layer){     //iterate over map layer
+        if (layer._leaflet_id == clusterId){         // if layer is markerCluster
+            layer.spiderfy(); //spiederfies our cluster
+        }
+    });
+    map.eachLayer(function(layer){     //iterate over map rather than clusters
+        if (layer._leaflet_id == id){         // if layer is marker
+            layer.openPopup();
+        }
+    });
+};
 
 var addressPoints = [
 	<?php 
         foreach ($out_array as $city) {
-            echo "[$city[lat], $city[lng], '".$city["names"]."']"; echo ", ";
+            echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']"; echo ", ";
       }
     ?>
 	];
@@ -60,8 +77,10 @@ var markers = L.markerClusterGroup();
 for (var i = 0; i < addressPoints.length; i++) {
   var a = addressPoints[i];
   var title = a[2];
+  var user_link = a[3];
   var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
-  marker.bindPopup(title, {autoClose: false, autoPan: false});
+  var text = '<a href="' + user_link + '" target="_blank">' + title + '</a>';
+  marker.bindPopup(text, {autoClose: false, autoPan: false});
   markers.addLayer(marker);
 }
 
@@ -91,19 +110,32 @@ map.on('moveend zoomend', function(e) {
   }
 });
 
-markers.on('clusterclick', function (e) {
-  bounds = map.getBounds();
-  var zoom = map.getZoom();
-  var childMarkers = e.layer.getAllChildMarkers();
-  if (zoom > 16) {
-    childMarkers.eachLayer(function (layer) {
-      if (bounds.contains(layer.getLatLng())) {
-        markersDisplayed = true;
-        layer.openPopup();
-      }
-    });
-  }
-});    
+//markers.on('clusterclick', function (e) {
+//  bounds = map.getBounds();
+//  var zoom = map.getZoom();
+//  var childMarkers = e.layer.getAllChildMarkers();
+//  if (zoom > 16) {
+//    childMarkers.eachLayer(function (layer) {
+//      if (bounds.contains(layer.getLatLng())) {
+//        markersDisplayed = true;
+//        layer.openPopup();
+//      }
+//    });
+//  }
+//});
+markers.on('clusterclick', function(e){
+    if(e.layer._zoom == 18){
+        popUpText = '<ul>';
+        //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
+        //let's work with the data:
+        for (feat in e.layer._markers){
+        	popUpText+= '<li><u onclick=openPopUp(' + e.layer._markers[feat]._leaflet_id + ','+ e.layer._leaflet_id +')>' + e.layer._markers[feat].feature.properties['title'] +  '</u></li>';;
+        }
+        popUpText += '</ul>';
+        //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
+        var popup = L.popup().setLatLng([e.layer._cLatLng.lat, e.layer._cLatLng.lng]).setContent(popUpText).openOn(map); 
+    }
+});
 </script>
 
 

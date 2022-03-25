@@ -6,6 +6,7 @@
 
 return [
     'menuMemberMap' => 'Overview map',
+    'menuAdressen' => 'Adresses Overview',
     'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'To fill out the following field, you must first register on %s in order to receive an API key.',
@@ -16,6 +17,7 @@ return [
     'zip_code'      => 'Post Code',
     'country_code'  => 'Country Code',
     'cc'            => 'Country Code',
+    'cc_search'     => 'For your Country Code klick <a href="https://laendercode.net/de/2-letter-list.html" target="_blank"><span style=color:red>here</span></a><br>',
     'membername'    => 'Membername',
     'lat'           => 'Lat',
     'lng'           => 'Lng',

@@ -6,6 +6,7 @@
 
 return [
     'menuMemberMap' => '&Uuml;bertsicht Map',
+    'menuAdressen' => 'Adressen &Uuml;bersicht',
     'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'Um das folgende Feld auszuf&uuml;llen, musst du zun&auml;chst dich auf %s registrieren um einen API-Key zu erhalten.',
@@ -14,6 +15,7 @@ return [
     'street'        => 'Stra&szlig;enname (optional)',
     'city'          => 'Stadt',
     'zip_code'      => 'PLZ',
+    'cc_search'     => 'Um dein L&aumlnderk&uuml;rzel zu finden klicke <a href="https://laendercode.net/de/2-letter-list.html" target="_blank"><span style=color:red>hier</span></a><br> Das L&aumlnderk&uuml;rzel f&uuml;r Deutschland ist "de"',
     'country_code'  => 'L&auml;nderk&uuml;rzel eintragen',
     'cc'  => 'L&auml;nderk&uuml;rzel',
     'membername'  => 'Membername',
