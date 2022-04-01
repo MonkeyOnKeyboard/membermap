@@ -68,7 +68,7 @@ class MemberMap extends \Ilch\Mapper
      */
     public function getMmp()
     {
-        return $this->getEntriesBy(['u.id IS NOT' => null]);
+        return $this->getEntriesBy(['u.id IS NOT' => null, 'lat !=' => '']);
     }  
 
     /**
@@ -111,7 +111,9 @@ class MemberMap extends \Ilch\Mapper
             'street' => $model->getStreet(),
             'city' => $model->getCity(),
             'zip_code' => $model->getZip_code(),
-            'country_code' => $model->getCountry_code()
+            'country_code' => $model->getCountry_code(),
+            'lat' => $model->getLat(),
+            'lng' => $model->getLng()
         ];
 
         $model = $this->getMmapByID($model->getUser_Id());
@@ -131,38 +133,42 @@ class MemberMap extends \Ilch\Mapper
         return $user_id;
     }
 
-    
     /**
-     * Inserts or updates entry.
+     * get lat/long for the entry.
      *
      * @param Model $model
-     * @return boolean|integer
+     * @return Model
      */
-    public function saveLatLng(Model $model)
+    public function makeLatLng(Model $model)
     {
-        $fields = [
-            'lat' => $model->getLat(),
-            'lng' => $model->getLng()
-        ];
-        
-        $model = $this->getMmapByID($model->getUser_Id());
-        
-        if ($model) {
-            $user_id = $model->getUser_Id();
-            $this->db()->update('membermap')
-            ->values($fields)
-            ->where(['user_id' => $user_id])
-            ->execute();
-        } else {
-            $user_id = $this->db()->insert('membermap')
-            ->values($fields)
-            ->execute();
+        $street = '';
+        if ($model->getStreet() != "") {
+            $street			= $model->getStreet();
+            $street			= strtolower($street);
+            $street			= str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $street );
+            $street			= preg_replace("/[^a-z0-9\_\s]/", "", $street);
+            $street			= str_replace( array(' ', '--'), array('-', '-'), $street );
         }
-        
-        return $user_id;
+        $zip_code           = $model->getZip_code();
+        $city               = $model->getCity();
+        $country_code       = $model->getCountry_code();
+
+        $url = 'https://nominatim.openstreetmap.org/search?format=json&county='.$country_code.'&city='.$city.'&postalcode='.$zip_code.($street ? '&street='.$street : '');
+
+        $json = url_get_contents($url, false);
+        $output = json_decode($json, true);
+
+        if (isset($output[0])) {
+            $model->setLat($output[0]['lat'])
+                ->setLng($output[0]['lon']);
+        } else {
+            $model->setLat('')
+                ->setLng('');
+        }
+
+        return $model;
     }
-    
-    
+
     /**
      * Deletes the entry.
      *

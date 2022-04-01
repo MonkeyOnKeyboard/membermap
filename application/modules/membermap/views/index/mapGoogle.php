@@ -1,36 +1,36 @@
 <?php if ($this->get('memberlocations')) { ?>
-<?php 
-$city_array = [];
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+<!-- Replace the value of the key parameter with your own API key. -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->get('apiKey');?>&callback=initialize&sensor=false">
+</script>
+
+
+
+
+
+<div id="map" style='width: 100%; height:530px;'></div>
+
+<?php
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
-    if ($location->getCity() != "") {
+    if ($location->getLat()) {
+        $userlink     =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
         $name         =   $location->getName();
-        $userlink         =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
-        $zip_code         =   $location->getZip_code();
-        $country_code = $location->getCountry_code();
-        if ($location->getStreet() != "") {
-            $address			=	$location->getStreet().''.$location->getCity();;
-        } else {
-            $address			=	$location->getCity();
-        }
-        $address			=	strtolower($address);
-        $address			=	str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $address );
-        $address			=	preg_replace("/[^a-z0-9\_\s]/", "", $address);
-        $address			=	str_replace( array(' ', '--'), array('-', '-'), $address );
+        $lat          =   $location->getLat();
+        $lng          =   $location->getLng();
 
         $city_array = [
-            "names" => $name,
-            "zip_code" => $zip_code,
-            "address" => $address,
-            "country_code" => $country_code,
             "user_link"   => $userlink,
+            "names" => $name,
+            "lat" => $lat,
+            "lng" => $lng
         ];
 
         array_push($out_array, $city_array);
     }
 }
 ?>
-<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+
 
 <script type="text/javascript">
     function initialize() {
@@ -44,11 +44,11 @@ foreach ($this->get('memberlocations') as $location) {
 
         var locations = [<?php 
                 foreach ($out_array as $city) {
-                    echo "['$city[names]', '$city[address] $city[zip_code] $city[country_code]', '$city[user_link]'],";
+                    echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']"; echo ", ";
                 }
                 ?>
             ];
-        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         var infowindow = new google.maps.InfoWindow();
         var markers=[];
         var markerCluster = new MarkerClusterer(map, markers, {
@@ -56,44 +56,35 @@ foreach ($this->get('memberlocations') as $location) {
                 "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m",
             });
         for (var i = 0; i < locations.length; i++) {
+            var a = locations[i];
+            
+            // Lat and Long for each marker
+           var point = new google.maps.LatLng(
+             parseFloat(a[0]),
+             parseFloat(a[1])
+           );
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+                title: a[2],
+                url: a[3]
+            });
+            bounds.extend(marker.getPosition());
+            map.fitBounds(bounds);
 
-            geocoder.geocode({
-            'address': locations[i][1]
-            }, (function(locations, i) {
+            google.maps.event.addListener(marker, 'click', (function(marker) {
+                return function() {
+                    infowindow.setContent("<div id='infowindow-content'><a href='" + marker.url + "' target='_blank'><h3>" + marker.title + "</h3></a></div>");
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+            //<!-- below code alway lies inside the loop-->
+            markers.push(marker);
+            markerCluster.addMarker(marker);
 
-                return function(results, status) {
-                        var marker = new google.maps.Marker({
-                                map: map,
-                                position: results[0].geometry.location,
-                                title: locations[i][0],
-                        		url: locations[i][2]
-                            });
-                        bounds.extend(marker.getPosition());
-                        map.fitBounds(bounds);
-
-                        google.maps.event.addListener(marker, 'click', (function(marker) {
-
-                            return function() {
-                                    infowindow.setContent("<div id='infowindow-content'><a href='" + locations[i][2] + "' target='_blank'><h3>" + locations[i][0] + "</h3></a>" + results[0]['formatted_address'] + "</div>");
-                                    infowindow.open(map, marker);
-                                }
-
-                            })(marker));
-                        //<!-- below code alway lies inside the loop-->
-                        markers.push(marker);
-                        markerCluster.addMarker(marker);
-
-                    }
-                })(locations, i));
         }
     }
 </script> 
-
-<div id="map-canvas" style='width: 100%; height:530px;'></div>
-
-<!-- Replace the value of the key parameter with your own API key. -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->get('apiKey');?>&callback=initialize&sensor=false">
-</script>
 <?php } else { ?>
 <div class="alert alert-danger">
     <?=$this->getTrans('noEntrys') ?>

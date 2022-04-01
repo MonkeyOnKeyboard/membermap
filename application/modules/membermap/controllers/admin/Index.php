@@ -6,7 +6,7 @@
 
 namespace Modules\Membermap\Controllers\Admin;
 
-use \Modules\Membermap\Mappers\MemberMap as GmapMapper;
+use \Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
 
 class Index extends \Ilch\Controller\Admin
 {
@@ -18,12 +18,6 @@ class Index extends \Ilch\Controller\Admin
                 'active' => true,
                 'icon' => 'fas fa-map-marked-alt',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index']),
-            ],
-            [
-                'name' => 'menuAdressen',
-                'active' => false,
-                'icon' => 'fas fa-map-marked-alt',
-                'url' => $this->getLayout()->getUrl(['controller' => 'adressen', 'action' => 'index']),
             ],
             [
                 'name' => 'settings',
@@ -42,7 +36,7 @@ class Index extends \Ilch\Controller\Admin
 
     public function indexAction()
     {
-        $mapper = new GmapMapper();
+        $mapper = new MemberMapMapper();
 
         $this->getLayout()->getAdminHmenu()
                 ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
@@ -53,7 +47,7 @@ class Index extends \Ilch\Controller\Admin
     public function delAction()
     {
         if ($this->getRequest()->isSecure()) {
-            $mapMapper = new GmapMapper();
+            $mapMapper = new MemberMapMapper();
             $mapMapper->delete($this->getRequest()->getParam('id'));
 
             $this->redirect()

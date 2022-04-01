@@ -18,7 +18,6 @@ class Index extends \Ilch\Controller\Frontend
             ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
                 ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index']);
-
     }
 
     public function mapAction()
@@ -78,7 +77,7 @@ class Index extends \Ilch\Controller\Frontend
                     ->setCity($this->getRequest()->getPost('city'))
                     ->setZip_code($this->getRequest()->getPost('zip_code'))
                     ->setCountry_code($this->getRequest()->getPost('country_code'));
-
+                $model = $mapper->makeLatLng($model);
                 $mapper->save($model);
 
                 $this->redirect()
@@ -109,4 +108,3 @@ class Index extends \Ilch\Controller\Frontend
         $this->redirect(['action' => 'index']);
     }
 }
-

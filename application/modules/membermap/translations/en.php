@@ -6,7 +6,6 @@
 
 return [
     'menuMemberMap' => 'Overview map',
-    'menuAdressen' => 'Adresses Overview',
     'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'To fill out the following field, you must first register on %s in order to receive an API key.',
@@ -32,7 +31,5 @@ return [
     'noApiKey'      => 'Please check API key!',
     'noMap'         => 'Module is not set up.',
     'service'       => 'Service',
-    'enablemapquest' => 'If you want to use this Modul. Please enable MapQuest Service in Settings!'
-    
 
 ];

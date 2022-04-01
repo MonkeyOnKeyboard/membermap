@@ -1,5 +1,5 @@
 <div class="alert alert-info">
-        <?=$this->getTrans('infoText') ?>
+    <?=$this->getTrans('infoText') ?>
 </div>
 <?php if ($this->get('memberlocations')): ?>
 <div class="table-responsive">

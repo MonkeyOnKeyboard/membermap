@@ -41,7 +41,7 @@ $membermap = $this->get('membermap');
                    value="<?=$this->escape($this->originalInput('zip_code', $membermap->getZip_code())) ?>" />
         </div>
     </div>
-        <div class="form-group <?=$this->validation()->hasError('country_code') ? 'has-error' : '' ?>">
+    <div class="form-group <?=$this->validation()->hasError('country_code') ? 'has-error' : '' ?>">
         <label for="country_code" class="col-lg-2 control-label">
             <?=$this->getTrans('country_code') ?>
         </label>
@@ -58,5 +58,5 @@ $membermap = $this->get('membermap');
 	<?=($this->get('membermap') != '') ?  $this->getSaveBar('updateButton') : $this->getSaveBar('add') ?>
 
     <a href="<?=$this->getUrl(['action' => 'del', 'user_id' => ($membermap)->getUser_id()], null, true) ?>" class="btn btn-danger" role="button"><?=$this->getTrans('delete') ?></a>
-    
+
 </form>

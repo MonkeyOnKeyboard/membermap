@@ -27,7 +27,7 @@ class Config extends \Ilch\Config\Install
             ],
         ],
 
-        'ilchCore' => '2.1.42',
+        'ilchCore' => '2.1.43',
         'phpVersion' => '7.0'
     ];
 
@@ -42,9 +42,10 @@ class Config extends \Ilch\Config\Install
 
     public function uninstall()
     {
-        $this->db()->queryMulti('DROP TABLE `[prefix]_membermap`');
-        $this->db()->queryMulti("DELETE FROM `[prefix]_config` WHERE `key` = 'map_apikey';");
-        $this->db()->queryMulti("DELETE FROM `[prefix]_config` WHERE `key` = 'map_service';");
+        $this->db()->drop('membermap', true);
+        $databaseConfig = new \Ilch\Config\Database($this->db());
+        $databaseConfig->delete('map_apikey');
+        $databaseConfig->delete('map_service');
     }
 
     public function getInstallSql()
