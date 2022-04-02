@@ -153,8 +153,8 @@ class MemberMap extends \Ilch\Mapper
         $city               = $model->getCity();
         $country_code       = $model->getCountry_code();
 
-        $url = 'https://nominatim.openstreetmap.org/search?format=json&county='.$country_code.'&city='.$city.'&postalcode='.$zip_code.($street ? '&street='.$street : '');
-
+        $url = 'https://nominatim.openstreetmap.org/search.php?'.($street ? 'street='.$street : '').'&city='.$city.'&country='.$country_code.'&postalcode='.$zip_code.'&format=jsonv2';
+        
         $json = url_get_contents($url, false);
         $output = json_decode($json, true);
 
