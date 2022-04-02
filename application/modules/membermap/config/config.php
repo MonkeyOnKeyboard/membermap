@@ -6,6 +6,8 @@
 
 namespace Modules\Membermap\Config;
 
+use \Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
+
 class Config extends \Ilch\Config\Install
 {
     /**
@@ -81,6 +83,13 @@ class Config extends \Ilch\Config\Install
             case "1.3.0":
                 // Add Colum lat and lng for storing locations latLng
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD COLUMN `lat` VARCHAR(255) NULL DEFAULT NULL AFTER `country_code`, ADD COLUMN `lng` VARCHAR(255) NULL DEFAULT NULL AFTER `lat`;');
+                // update all user
+                $mapper = new MemberMapMapper();
+                $mmp = $mapper->getEntriesBy();
+                foreach ($mmp as $model) {
+                    $model = $mapper->makeLatLng($model);
+                    $mapper->save($model);
+                }
         }
     }
 }
