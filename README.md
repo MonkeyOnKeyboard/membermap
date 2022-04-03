@@ -10,7 +10,7 @@ Das Modul beinhaltet 3 verschiedene Mapservice Optionen.
 Zu 1. MapQuest API bietet nach der Registrierung und Einrichtung des API-Schlüssels 15000 Zugriffe im Monat frei an. Die Besonderheit, hier wird die Adresse beim Zugriff
       auf die Map automatisch umgewandelt in Längen und Breitengrad Koordinaten. Was natürlich Zugriffe bedeutet.
 
-Zu 2. Ähnlich zu MapQuest bietet GoogleMaps API ein KOstenPlan mit Zugriffen, die im Monat kostenlos sind. Hierzu bitte sich Informieren.
+Zu 2. Ähnlich zu MapQuest bietet GoogleMaps API ein KostenPlan mit Zugriffen, die im Monat kostenlos sind. Hierzu bitte sich Informieren.
 
 Zu 3. Open Street Maps läuft hingegen Autonom ohne API Schlüssel und in der Regel komplett kostenlos
 
