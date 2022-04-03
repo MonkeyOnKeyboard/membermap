@@ -9,6 +9,7 @@ return [
     'membermap'     => 'Membermap',
     'apiKeyLabel'   => 'Map Api Key',
     'getyourkeys'   => 'To fill out the following field, you must first register on %s in order to receive an API key.',
+    'nokeysneed'    => 'You dont need an API-Key for Open Street Maps Service. But write in "OSMnoKEY"',
     'mapEntry'      => 'Enter, Change or Delete your place of residence',
     'mapView'       => 'View Map',
     'street'        => 'Street name (optional)',

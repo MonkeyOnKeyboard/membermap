@@ -36,6 +36,8 @@ class Index extends \Ilch\Controller\Frontend
                 $this->getRequest()->setActionName('mapMapQuest');
             } elseif ((int)$this->getConfig()->get('map_service') === 2) {
                 $this->getRequest()->setActionName('mapGoogle');
+            } elseif ((int)$this->getConfig()->get('map_service') === 3) {
+                $this->getRequest()->setActionName('mapOsm');
             }
             $this->getView()->set('memberlocations', $mapper->getMmp());
         }

@@ -67,7 +67,7 @@ class Config extends \Ilch\Config\Install
     {
         switch ($installedVersion) {
             case "1.0.0":
-                // Map-Service auswahl (1 = MapQuest, 2 = Google)
+                // Map-Service auswahl (1 = MapQuest, 2 = Google, 3 = OSM)
                 $databaseConfig = new \Ilch\Config\Database($this->db());
                 $databaseConfig->set('map_service', '1');
             case "1.1.0":

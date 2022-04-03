@@ -42,7 +42,7 @@ class Settings extends \Ilch\Controller\Admin
 
         if ($this->getRequest()->isPost() ) {
             $validation = Validation::create($this->getRequest()->getPost(), [
-                'service' => 'required|numeric|integer|min:1|max:2',
+                'service' => 'required|numeric|integer|min:1|max:3',
                 'apiKey' => 'required',
             ]);
 

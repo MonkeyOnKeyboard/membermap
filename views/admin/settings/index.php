@@ -9,6 +9,7 @@
                 <option disabled <?=(!$this->get('service') ? 'selected="selected"' : '') ?> value="0"><?=$this->getTrans('pleaseselect') ?></option>
                 <option <?=($this->get('service') == 1 ? 'selected="selected"' : '') ?> value="1">MapQuest</option>
                 <option <?=($this->get('service') == 2 ? 'selected="selected"' : '') ?> value="2">Google</option>
+                <option <?=($this->get('service') == 3 ? 'selected="selected"' : '') ?> value="3">OSM</option>
             </select>
         </div>
     </div>
@@ -17,6 +18,9 @@
     </div>
     <div id="apikey_info_google" class="alert alert-info">
         <?= $this->getTrans('getyourkeys', '<a href="https://developers.google.com/maps/documentation/javascript/get-api-key/" target="_blank">https://developers.google.com/maps/documentation/javascript/get-api-key/</a>') ?>
+    </div>
+    <div id="apikey_info_osm" class="alert alert-info">
+        <?= $this->getTrans('nokeysneed') ?>
     </div>
     <div id="apiKey" class="form-group">
         <label for="apiKey" class="col-lg-2 control-label">
@@ -35,14 +39,22 @@
             $('#apiKey').removeClass('hidden');
             $('#apikey_info_mapquest').removeClass('hidden');
             $('#apikey_info_google').addClass('hidden');
+            $('#apikey_info_osm').addClass('hidden');
         } else if ($(this).val() == "2") {
             $('#apiKey').removeClass('hidden');
             $('#apikey_info_mapquest').addClass('hidden');
             $('#apikey_info_google').removeClass('hidden');
+            $('#apikey_info_osm').addClass('hidden');
+        } else if ($(this).val() == "3") {
+            $('#apiKey').removeClass('hidden');
+            $('#apikey_info_mapquest').addClass('hidden');
+            $('#apikey_info_google').addClass('hidden');
+            $('#apikey_info_osm').removeClass('hidden');
         } else {
             $('#apiKey').addClass('hidden');
             $('#apikey_info_mapquest').addClass('hidden');
             $('#apikey_info_google').addClass('hidden');
+            $('#apikey_info_osm').addClass('hidden');
         }
     });
     $('[name="service"]').change();
