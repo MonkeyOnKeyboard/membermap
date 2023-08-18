@@ -157,9 +157,9 @@ class MemberMap extends \Ilch\Model
      * Get Street.
      *
      * @since Version 1.2.0
-     * @return string
+     * @return string|null
      */
-    public function getStreet(): string
+    public function getStreet(): ?string
     {
         return $this->street;
     }
@@ -179,9 +179,9 @@ class MemberMap extends \Ilch\Model
     /**
      * Get City.
      *
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -201,9 +201,9 @@ class MemberMap extends \Ilch\Model
     /**
      * Get Zip Code.
      *
-     * @return string
+     * @return string|null
      */
-    public function getZip_code(): string
+    public function getZip_code(): ?string
     {
         return $this->zip_code;
     }
@@ -223,9 +223,9 @@ class MemberMap extends \Ilch\Model
     /**
      * Get Country Code.
      *
-     * @return string
+     * @return string|null
      */
-    public function getCountry_code(): string
+    public function getCountry_code(): ?string
     {
         return $this->country_code;
     }
