@@ -6,11 +6,12 @@
 
 namespace Modules\Membermap\Controllers;
 
-use \Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
-use \Modules\Membermap\Models\MemberMap as MemberMapModel;
+use Ilch\Controller\Frontend;
+use Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
+use Modules\Membermap\Models\MemberMap as MemberMapModel;
 use Ilch\Validation;
 
-class Index extends \Ilch\Controller\Frontend
+class Index extends Frontend
 {
     public function indexAction()
     {

@@ -1,12 +1,8 @@
-<?php if ($this->get('memberlocations')) { ?>
+<?php if ($this->get('memberlocations')) : ?>
 <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 <!-- Replace the value of the key parameter with your own API key. -->
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->get('apiKey');?>&callback=initialize&sensor=false">
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=urlencode($this->get('apiKey')) ?>&callback=initialize&sensor=false">
 </script>
-
-
-
-
 
 <div id="map" style='width: 100%; height:530px;'></div>
 
@@ -26,7 +22,7 @@ foreach ($this->get('memberlocations') as $location) {
             "lng" => $lng
         ];
 
-        array_push($out_array, $city_array);
+        $out_array[] = $city_array;
     }
 }
 ?>
@@ -85,8 +81,8 @@ foreach ($this->get('memberlocations') as $location) {
         }
     }
 </script> 
-<?php } else { ?>
+<?php else : ?>
 <div class="alert alert-danger">
-    <?=$this->getTrans('noEntrys') ?>
+    <?=$this->getTrans('noEntries') ?>
 </div>
-<?php } ?>
+<?php endif; ?>

@@ -26,7 +26,7 @@
         <?php foreach ($this->get('memberlocations') as $memberlocation): ?>
             <tr>
                 <td><?=$this->getDeleteIcon(['action' => 'del', 'id' => $memberlocation->getId()]) ?></td>
-                <td><?=$this->escape($memberlocation->getName() !== '' ? $memberlocation->getName() : 'ERROR ('.$memberlocation->getUser_Id().')') ?></td>
+                <td><?=$this->escape($memberlocation->getName() !== '' ? $memberlocation->getName() : $this->getTrans('FailEntriesError') . ' (' . $memberlocation->getUser_Id() . ')') ?></td>
                 <td><?=$this->escape($memberlocation->getStreet()) ?></td>
                 <td><?=$this->escape($memberlocation->getCity()) ?></td>
                 <td><?=$this->escape($memberlocation->getZip_code()) ?></td>
@@ -39,6 +39,6 @@
 </div>  
 <?php else: ?>  
 <div class="alert alert-danger">
-        <?=$this->getTrans('nofailEntrys') ?>
+        <?=$this->getTrans('noFailEntries') ?>
 </div>
 <?php endif; ?>  

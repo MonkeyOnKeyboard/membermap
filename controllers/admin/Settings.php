@@ -6,9 +6,10 @@
 
 namespace Modules\Membermap\Controllers\Admin;
 
+use Ilch\Controller\Admin;
 use Ilch\Validation;
 
-class Settings extends \Ilch\Controller\Admin
+class Settings extends Admin
 {
     public function init()
     {
@@ -16,13 +17,13 @@ class Settings extends \Ilch\Controller\Admin
             [
                 'name' => 'menuMemberMap',
                 'active' => false,
-                'icon' => 'fas fa-map-marked-alt',
+                'icon' => 'fa-solid fa-map-location-dot',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index'])
             ],
             [
                 'name' => 'settings',
                 'active' => true,
-                'icon' => 'fas fa-cogs',
+                'icon' => 'fa-solid fa-gears',
                 'url' => $this->getLayout()->getUrl(['controller' => 'settings', 'action' => 'index'])
             ]
         ];

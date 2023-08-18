@@ -1,30 +1,28 @@
-<?php if ($this->get('memberlocations')) { ?>
+<?php if ($this->get('memberlocations')) : ?>
 <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
 <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
- 
+
 <script src="https://unpkg.com/leaflet.markercluster@1.0.6/dist/leaflet.markercluster.js"></script>
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.css"/>
 <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.6/dist/MarkerCluster.Default.css"/>
-
-
 
 <?php 
 $city_array = [];
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getCity() != "") {
-        $name         =   $location->getName();
-        $zip_code         =   $location->getZip_code();
+        $name = $location->getName();
+        $zip_code = $location->getZip_code();
         $country_code = $location->getCountry_code();
         if ($location->getStreet() != "") {
-            $address			=	$location->getStreet().', '.$location->getCity();;
+            $address = $location->getStreet() . ', ' . $location->getCity();
         } else {
-            $address			=	$location->getCity();
+            $address = $location->getCity();
         }
-        $address			=	strtolower($address);
-        $address			=	str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $address );
-        $address			=	preg_replace("/[^a-z0-9\_\s]/", "", $address);
-        $address			=	str_replace( array(' ', '--'), array('-', '-'), $address );
+        $address = strtolower($address);
+        $address = str_replace(array('ï¿½','ï¿½','ï¿½','ï¿½'), array('ae', 'ue', 'oe', 'ss'), $address );
+        $address = preg_replace("/[^a-z0-9\_\s]/", "", $address);
+        $address = str_replace( array(' ', '--'), array('-', '-'), $address );
 
         $city_array = [
             "names" => $name,
@@ -33,7 +31,7 @@ foreach ($this->get('memberlocations') as $location) {
             "country_code" => $country_code,
         ];
 
-        array_push($out_array, $city_array);
+        $out_array[] = $city_array;
     }
 }
 
@@ -88,8 +86,8 @@ foreach ($this->get('memberlocations') as $location) {
     }
 </script>
 <div id='map' style='width: 100%; height:530px;'></div>
-<?php } else { ?>
+<?php else: ?>
 <div class="alert alert-danger">
-        <?=$this->getTrans('noEntrys') ?>
+    <?=$this->getTrans('noEntries') ?>
 </div>
-<?php } ?>
+<?php endif; ?>
