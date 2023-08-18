@@ -6,20 +6,20 @@
 
 namespace Modules\Membermap\Mappers;
 
-use \Modules\Membermap\Models\MemberMap as Model;
+use Ilch\Pagination;
+use Modules\Membermap\Models\MemberMap as Model;
 
 class MemberMap extends \Ilch\Mapper
 {
-
     /**
      * Gets the Entries by param.
      *
      * @param array $where
      * @param array $orderBy
-     * @param \Ilch\Pagination|null $pagination
+     * @param Pagination|null $pagination
      * @return array|null
      */
-    public function getEntriesBy($where = [], $orderBy = ['g.id' => 'ASC'], $pagination = null)
+    public function getEntriesBy(array $where = [], array $orderBy = ['g.id' => 'ASC'], Pagination $pagination = null): ?array
     {
         $select = $this->db()->select()
         ->fields(['g.id', 'g.user_id', 'g.street', 'g.city', 'g.zip_code', 'g.country_code', 'g.lat', 'g.lng'])
@@ -63,23 +63,12 @@ class MemberMap extends \Ilch\Mapper
     /**
      * Gets the NOT Empty Entries.
      *
-     * @param array $where
      * @return array|null
      */
-    public function getMmp()
+    public function getMmp(): ?array
     {
         return $this->getEntriesBy(['u.id IS NOT' => null, 'lat !=' => '']);
-    }  
-
-    /**
-     * Gets the Empty Entries.
-     *
-     * @return array|null
-     */
-    public function getMmpEmpty()
-    {
-        return $this->getEntriesBy(['u.id IS' => null]);
-    }  
+    }
 
     /**
      * Gets the Entrie by Userid.
@@ -87,9 +76,9 @@ class MemberMap extends \Ilch\Mapper
      * @param int $user_id
      * @return Model|null
      */
-    public function getMmapByID(int $user_id)
+    public function getMmapByID(int $user_id): ?Model
     {
-        $model = $this->getEntriesBy(['u.id' => (int)$user_id]);
+        $model = $this->getEntriesBy(['u.id' => $user_id]);
 
         if (!empty($model)) {
             return reset($model);
@@ -102,9 +91,9 @@ class MemberMap extends \Ilch\Mapper
      * Inserts or updates entry.
      *
      * @param Model $model
-     * @return boolean|integer
+     * @return int
      */
-    public function save(Model $model)
+    public function save(Model $model): int
     {
         $fields = [
             'user_id' => $model->getUser_Id(),
@@ -139,7 +128,7 @@ class MemberMap extends \Ilch\Mapper
      * @param Model $model
      * @return Model
      */
-    public function makeLatLng(Model $model)
+    public function makeLatLng(Model $model): Model
     {
         $street = '';
         if ($model->getStreet() != "") {
@@ -153,8 +142,8 @@ class MemberMap extends \Ilch\Mapper
         $city               = $model->getCity();
         $country_code       = $model->getCountry_code();
 
-        $url = 'https://nominatim.openstreetmap.org/search.php?'.($street ? 'street='.$street : '').'&city='.$city.'&country='.$country_code.'&postalcode='.$zip_code.'&format=jsonv2';
-        
+        $url = 'https://nominatim.openstreetmap.org/search.php?' . ($street ? 'street=' . urlencode($street) : '') . '&city=' . urlencode($city).'&country=' . urlencode($country_code) . '&postalcode=' . urlencode($zip_code) . '&format=jsonv2';
+
         $json = url_get_contents($url, false);
         $output = json_decode($json, true);
 
@@ -173,12 +162,12 @@ class MemberMap extends \Ilch\Mapper
      * Deletes the entry.
      *
      * @param int $id
-     * @return boolean
+     * @return bool
      */
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
-        return $this->db()->delete('membermap')
-            ->where(['id' => (int) $id])
+        return (bool)$this->db()->delete('membermap')
+            ->where(['id' => $id])
             ->execute();
     }
 
@@ -186,13 +175,12 @@ class MemberMap extends \Ilch\Mapper
      * Deletes the entry by Userid.
      *
      * @param int $user_id
-     * @return boolean
+     * @return bool
      */
-    public function deleteUser(int $user_id)
+    public function deleteUser(int $user_id): bool
     {
-        return $this->db()->delete('membermap')
-            ->where(['user_id' => (int) $user_id])
+        return (bool)$this->db()->delete('membermap')
+            ->where(['user_id' => $user_id])
             ->execute();
     }
-
 }

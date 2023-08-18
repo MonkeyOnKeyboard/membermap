@@ -6,9 +6,10 @@
 
 namespace Modules\Membermap\Controllers\Admin;
 
-use \Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
+use Ilch\Controller\Admin;
+use Modules\Membermap\Mappers\MemberMap as MemberMapMapper;
 
-class Index extends \Ilch\Controller\Admin
+class Index extends Admin
 {
     public function init()
     {
@@ -16,13 +17,13 @@ class Index extends \Ilch\Controller\Admin
             [
                 'name' => 'menuMemberMap',
                 'active' => true,
-                'icon' => 'fas fa-map-marked-alt',
+                'icon' => 'fa-solid fa-map-location-dot',
                 'url' => $this->getLayout()->getUrl(['controller' => 'index', 'action' => 'index']),
             ],
             [
                 'name' => 'settings',
                 'active' => false,
-                'icon' => 'fas fa-cogs',
+                'icon' => 'fa-solid fa-gears',
                 'url' => $this->getLayout()->getUrl(['controller' => 'settings', 'action' => 'index'])
             ]
         ];
@@ -41,7 +42,7 @@ class Index extends \Ilch\Controller\Admin
         $this->getLayout()->getAdminHmenu()
                 ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
 
-        $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
+        $this->getView()->set('memberlocations', $mapper->getMmp());
     }
 
     public function delAction()

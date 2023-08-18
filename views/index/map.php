@@ -1,9 +1,9 @@
-<?php if (!$this->get('apiKey')) { ?>
+<?php if (!$this->get('apiKey')) : ?>
 <div class="alert alert-danger">
     <?=$this->getTrans('noApiKey') ?>
 </div>
-<?php } else { ?>
+<?php else :?>
 <div class="alert alert-danger">
     <?=$this->getTrans('noMap') ?>
 </div>
-<?php } ?>
+<?php endif; ?>

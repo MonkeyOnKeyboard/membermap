@@ -51,12 +51,10 @@ $membermap = $this->get('membermap');
                    id="country_code"
                    name="country_code"
                    value="<?=$this->escape($this->originalInput('country_code', $membermap->getCountry_code())) ?>" />
-                   <lable><?=$this->getTrans('cc_search') ?></lable>
+            <div><?=$this->getTrans('cc_search') ?></div>
         </div>
     </div>
 
 	<?=($this->get('membermap') != '') ?  $this->getSaveBar('updateButton') : $this->getSaveBar('add') ?>
-
     <a href="<?=$this->getUrl(['action' => 'del', 'user_id' => ($membermap)->getUser_id()], null, true) ?>" class="btn btn-danger" role="button"><?=$this->getTrans('delete') ?></a>
-
 </form>

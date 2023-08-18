@@ -73,17 +73,15 @@ class MemberMap extends \Ilch\Model
      */
     protected $lng;
 
-
-
     /**
      * Set ID.
      *
-     * @param int
+     * @param int $id
      * @return $this
      */
-    public function setId(int $id)
+    public function setId(int $id): MemberMap
     {
-        $this->id = (int) $id;
+        $this->id = $id;
         return $this;
     }
 
@@ -92,7 +90,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -100,12 +98,12 @@ class MemberMap extends \Ilch\Model
     /**
      * Set User ID.
      *
-     * @param int
+     * @param int $user_id
      * @return $this
      */
-    public function setUser_Id(int $user_id)
+    public function setUser_Id(int $user_id): MemberMap
     {
-        $this->user_id = (int) $user_id;
+        $this->user_id = $user_id;
         return $this;
     }
 
@@ -114,7 +112,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return int
      */
-    public function getUser_Id()
+    public function getUser_Id(): int
     {
         return $this->user_id;
     }
@@ -122,10 +120,10 @@ class MemberMap extends \Ilch\Model
     /**
      * Set Username.
      *
-     * @param string
+     * @param string $name
      * @return $this
      */
-    public function setName(string $name)
+    public function setName(string $name): MemberMap
     {
         $this->name = $name;
         return $this;
@@ -136,7 +134,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -144,12 +142,12 @@ class MemberMap extends \Ilch\Model
     /**
      * Set Street.
      *
+     * @param string $street
+     * @return $this
      * @since Version 1.2.0
      *
-     * @param string
-     * @return $this
      */
-    public function setStreet(string $street)
+    public function setStreet(string $street): MemberMap
     {
         $this->street = $street;
         return $this;
@@ -159,10 +157,9 @@ class MemberMap extends \Ilch\Model
      * Get Street.
      *
      * @since Version 1.2.0
-     *
      * @return string
      */
-    public function getStreet()
+    public function getStreet(): string
     {
         return $this->street;
     }
@@ -170,10 +167,10 @@ class MemberMap extends \Ilch\Model
     /**
      * Set City.
      *
-     * @param string
+     * @param string $city
      * @return $this
      */
-    public function setCity(string $city)
+    public function setCity(string $city): MemberMap
     {
         $this->city = $city;
         return $this;
@@ -184,7 +181,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return string
      */
-    public function getCity()
+    public function getCity(): string
     {
         return $this->city;
     }
@@ -192,10 +189,10 @@ class MemberMap extends \Ilch\Model
     /**
      * Set Zip Code.
      *
-     * @param string
+     * @param string $zip_code
      * @return $this
      */
-    public function setZip_code(string $zip_code)
+    public function setZip_code(string $zip_code): MemberMap
     {
         $this->zip_code = $zip_code;
         return $this;
@@ -206,7 +203,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return string
      */
-    public function getZip_code()
+    public function getZip_code(): string
     {
         return $this->zip_code;
     }
@@ -214,10 +211,10 @@ class MemberMap extends \Ilch\Model
     /**
      * Set Country Code.
      *
-     * @param string
+     * @param string $country_code
      * @return $this
      */
-    public function setCountry_code(string $country_code)
+    public function setCountry_code(string $country_code): MemberMap
     {
         $this->country_code = $country_code;
         return $this;
@@ -228,7 +225,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return string
      */
-    public function getCountry_code()
+    public function getCountry_code(): string
     {
         return $this->country_code;
     }
@@ -236,12 +233,11 @@ class MemberMap extends \Ilch\Model
     /**
      * Set lat.
      *
-     * @since Version 1.3.0
-     *
-     * @param string
+     * @param string $lat
      * @return $this
+     * @since Version 1.3.0
      */
-    public function setLat($lat)
+    public function setLat(string $lat): MemberMap
     {
         $this->lat = $lat;
         return $this;
@@ -251,10 +247,9 @@ class MemberMap extends \Ilch\Model
      * Get lat.
      *
      * @since Version 1.3.0
-     *
      * @return string
      */
-    public function getLat()
+    public function getLat(): string
     {
         return $this->lat;
     }
@@ -262,12 +257,11 @@ class MemberMap extends \Ilch\Model
     /**
      * Set lng.
      *
-     * @since Version 1.3.0
-     *
-     * @param string
+     * @param string $lng
      * @return $this
+     * @since Version 1.3.0
      */
-    public function setLng($lng)
+    public function setLng(string $lng): MemberMap
     {
         $this->lng = $lng;
         return $this;
@@ -277,12 +271,10 @@ class MemberMap extends \Ilch\Model
      * Get lng.
      *
      * @since Version 1.3.0
-     *
      * @return string
      */
-    public function getLng()
+    public function getLng(): string
     {
         return $this->lng;
     }
-
 }

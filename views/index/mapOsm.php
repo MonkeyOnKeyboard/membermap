@@ -6,31 +6,28 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
 
-
-
 <div id='map' style='width: 100%; height:530px;'></div>
 
 <?php
 $out_array = [];
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getLat()) {
-        $userlink     =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
-        $name         =   $location->getName();
-        $lat          =   $location->getLat();
-        $lng          =   $location->getLng();
+        $userlink     = $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
+        $name         = $location->getName();
+        $lat          = $location->getLat();
+        $lng          = $location->getLng();
 
         $city_array = [
-            "user_link"   => $userlink,
-            "names" => $name,
-            "lat" => $lat,
-            "lng" => $lng
+            "user_link" => $userlink,
+            "names"     => $name,
+            "lat"       => $lat,
+            "lng"       => $lng
         ];
 
-        array_push($out_array, $city_array);
+        $out_array[] = $city_array;
     }
 }
 ?>
-
 
 <script>
     function openPopUp(id, clusterId){
@@ -45,7 +42,7 @@ foreach ($this->get('memberlocations') as $location) {
                 layer.openPopup();
             }
         });
-    };
+    }
 
     var locations = [
         <?php 
@@ -108,7 +105,7 @@ foreach ($this->get('memberlocations') as $location) {
             //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
             //let's work with the data:
             for (feat in e.layer._markers){
-                popUpText+= '<li><u onclick=openPopUp(' + e.layer._markers[feat]._leaflet_id + ','+ e.layer._leaflet_id +')>' + e.layer._markers[feat].feature.properties['title'] +  '</u></li>';;
+                popUpText+= '<li><u onclick=openPopUp(' + e.layer._markers[feat]._leaflet_id + ','+ e.layer._leaflet_id +')>' + e.layer._markers[feat].feature.properties['title'] +  '</u></li>';
             }
             popUpText += '</ul>';
             //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
@@ -118,6 +115,6 @@ foreach ($this->get('memberlocations') as $location) {
 </script>
 <?php } else { ?>
 <div class="alert alert-danger">
-    <?=$this->getTrans('noEntrys') ?>
+    <?=$this->getTrans('noEntries') ?>
 </div>
 <?php } ?>

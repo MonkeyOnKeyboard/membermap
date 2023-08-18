@@ -1,9 +1,9 @@
 <form method="POST" class="form-horizontal">
     <?=$this->getTokenField() ?>
     <div class="form-group">
-        <div for="service" class="col-lg-2 control-label">
+        <label for="service" class="col-lg-2 control-label">
             <?=$this->getTrans('service') ?>:
-        </div>
+        </label>
         <div class="col-lg-4">
             <select class="form-control" id="service" name="service">
                 <option disabled <?=(!$this->get('service') ? 'selected="selected"' : '') ?> value="0"><?=$this->getTrans('pleaseselect') ?></option>
@@ -35,17 +35,17 @@
 </form>
 <script>
     $('[name="service"]').change(function () {
-        if ($(this).val() == "1") {
+        if ($(this).val() === "1") {
             $('#apiKey').removeClass('hidden');
             $('#apikey_info_mapquest').removeClass('hidden');
             $('#apikey_info_google').addClass('hidden');
             $('#apikey_info_osm').addClass('hidden');
-        } else if ($(this).val() == "2") {
+        } else if ($(this).val() === "2") {
             $('#apiKey').removeClass('hidden');
             $('#apikey_info_mapquest').addClass('hidden');
             $('#apikey_info_google').removeClass('hidden');
             $('#apikey_info_osm').addClass('hidden');
-        } else if ($(this).val() == "3") {
+        } else if ($(this).val() === "3") {
             $('#apiKey').removeClass('hidden');
             $('#apikey_info_mapquest').addClass('hidden');
             $('#apikey_info_google').addClass('hidden');
