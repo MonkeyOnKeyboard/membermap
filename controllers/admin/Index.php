@@ -42,7 +42,7 @@ class Index extends Admin
         $this->getLayout()->getAdminHmenu()
                 ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
 
-        $this->getView()->set('memberlocations', $mapper->getMmpEmpty());
+        $this->getView()->set('memberlocations', $mapper->getMmp());
     }
 
     public function delAction()

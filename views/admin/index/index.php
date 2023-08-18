@@ -1,6 +1,3 @@
-<div class="alert alert-info">
-    <?=$this->getTrans('infoText') ?>
-</div>
 <?php if ($this->get('memberlocations')): ?>
 <div class="table-responsive">
     <table class="table table-hover table-striped">
@@ -15,18 +12,18 @@
         <thead>
             <tr>
                 <th></th>
-                <th><?=$this->getTrans('user') ?></th>
+                <th><?=$this->getTrans('username') ?></th>
                 <th><?=$this->getTrans('street') ?></th>
                 <th><?=$this->getTrans('city') ?></th>
                 <th><?=$this->getTrans('zip_code') ?></th>
-                <th><?=$this->getTrans('country_code') ?></th>
+                <th><?=$this->getTrans('cc') ?></th>
             </tr>
         </thead>
         <tbody>
         <?php foreach ($this->get('memberlocations') as $memberlocation): ?>
             <tr>
                 <td><?=$this->getDeleteIcon(['action' => 'del', 'id' => $memberlocation->getId()]) ?></td>
-                <td><?=$this->escape($memberlocation->getName() !== '' ? $memberlocation->getName() : $this->getTrans('FailEntriesError') . ' (' . $memberlocation->getUser_Id() . ')') ?></td>
+                <td><?=$this->escape($memberlocation->getName()) ?></td>
                 <td><?=$this->escape($memberlocation->getStreet()) ?></td>
                 <td><?=$this->escape($memberlocation->getCity()) ?></td>
                 <td><?=$this->escape($memberlocation->getZip_code()) ?></td>
@@ -39,6 +36,6 @@
 </div>  
 <?php else: ?>  
 <div class="alert alert-danger">
-        <?=$this->getTrans('noFailEntries') ?>
+    <?=$this->getTrans('noEntries') ?>
 </div>
 <?php endif; ?>  

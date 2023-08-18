@@ -52,14 +52,16 @@ class Config extends \Ilch\Config\Install
     {
         return 'CREATE TABLE IF NOT EXISTS `[prefix]_membermap` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
-            `user_id` INT(11) NULL DEFAULT NULL,
+            `user_id` INT(11) UNSIGNED NOT NULL,
             `zip_code` VARCHAR(15) NULL DEFAULT NULL,
             `street` VARCHAR(255) NULL DEFAULT NULL,
             `city` VARCHAR(100) NULL DEFAULT NULL,
             `country_code` VARCHAR(4) NULL DEFAULT NULL,
             `lat` VARCHAR(255) NULL DEFAULT NULL,
             `lng` VARCHAR(255) NULL DEFAULT NULL,
-            PRIMARY KEY(`id`)
+            PRIMARY KEY (`id`) USING BTREE,
+            INDEX `FK_[prefix]_membermap_[prefix]_users` (`user_id`) USING BTREE,
+            CONSTRAINT `FK_[prefix]_membermap_[prefix]_users` FOREIGN KEY (`user_id`) REFERENCES `[prefix]_users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;';
     }
 
@@ -94,6 +96,30 @@ class Config extends \Ilch\Config\Install
 
                 // Update icon
                 $this->db()->query("UPDATE `[prefix]_modules` SET `icon_small` = '" . $this->config['icon_small'] . "' WHERE `key` = '" . $this->config['key'] . "';");
+
+                // Change datatype of column "user_id".
+                $this->db()->query('ALTER TABLE `[prefix]_membermap` MODIFY COLUMN `user_id` INT(11) UNSIGNED NOT NULL;');
+
+                // Add constraint to membermap after deleting orphaned rows in it (rows with an user_id that doesn't exist in the users table) as this would lead to an error.
+                $existingUserIds = $this->db()->select('id')
+                    ->from('users')
+                    ->execute()
+                    ->fetchList();
+
+                $userIds = $this->db()->select('user_id')
+                    ->from('membermap')
+                    ->execute()
+                    ->fetchList();
+
+                $orphanedRows = array_diff($userIds ?? [], $existingUserIds ?? []);
+                if (count($orphanedRows) > 0) {
+                    $this->db()->delete()->from('membermap')
+                        ->where(['user_id' => $orphanedRows])
+                        ->execute();
+                }
+
+                $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD INDEX `FK_[prefix]_membermap_[prefix]_users` (`user_id`) USING BTREE;');
+                $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD CONSTRAINT `FK_[prefix]_membermap_[prefix]_users` FOREIGN KEY (`user_id`) REFERENCES `[prefix]_users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;');
         }
     }
 }

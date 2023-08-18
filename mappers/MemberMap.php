@@ -68,17 +68,7 @@ class MemberMap extends \Ilch\Mapper
     public function getMmp(): ?array
     {
         return $this->getEntriesBy(['u.id IS NOT' => null, 'lat !=' => '']);
-    }  
-
-    /**
-     * Gets the Empty Entries.
-     *
-     * @return array|null
-     */
-    public function getMmpEmpty(): ?array
-    {
-        return $this->getEntriesBy(['u.id IS' => null]);
-    }  
+    }
 
     /**
      * Gets the Entrie by Userid.
