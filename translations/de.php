@@ -10,7 +10,7 @@ return [
     'apiKeyLabel' => 'Map Api Key',
     'getyourkeys' => 'Um das folgende Feld auszuf&uuml;llen, musst du dich zun&auml;chst auf %s registrieren, um einen API-Key zu erhalten.',
     'nokeysneed' => 'Du brauchst f&uuml; Open Street Maps Service keinen API-Key. Aber schreib bitte "OSMnoKEY" in das Feld!',
-    'mapEntry' => 'Wohnort eintragen | &auml;ndern | l&ouml;schen',
+    'mapEntry' => 'Wohnort anpassen',
     'mapView' => 'Karte ansehen',
     'street' => 'Stra&szlig;enname (optional)',
     'city' => 'Stadt',
