@@ -13,7 +13,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.3.1',
+        'version' => '1.4.0',
         'icon_small' => 'fa-solid fa-map-location-dot',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -27,7 +27,7 @@ class Config extends \Ilch\Config\Install
             ],
         ],
 
-        'ilchCore' => '2.1.48',
+        'ilchCore' => '2.2.0',
         'phpVersion' => '7.3'
     ];
 
@@ -120,6 +120,7 @@ class Config extends \Ilch\Config\Install
 
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD INDEX `FK_[prefix]_membermap_[prefix]_users` (`user_id`) USING BTREE;');
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD CONSTRAINT `FK_[prefix]_membermap_[prefix]_users` FOREIGN KEY (`user_id`) REFERENCES `[prefix]_users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;');
+            case "1.3.1":
         }
     }
 }
