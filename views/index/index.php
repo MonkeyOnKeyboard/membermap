@@ -1,3 +1,7 @@
+<?php
+
+/** @var \Ilch\View $this */
+?>
 <form method="POST" action="">
     <?=$this->getTokenField() ?>
 

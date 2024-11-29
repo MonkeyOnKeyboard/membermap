@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -28,8 +29,7 @@ class Index extends Admin
             ]
         ];
 
-        $this->getLayout()->addMenu
-        (
+        $this->getLayout()->addMenu(
             'membermap',
             $items
         );
@@ -40,14 +40,14 @@ class Index extends Admin
         $mapper = new MemberMapMapper();
 
         $this->getLayout()->getAdminHmenu()
-                ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
+            ->add($this->getTranslator()->trans('menuMemberMap'), ['controller' => 'index', 'action' => 'index']);
 
         $this->getView()->set('memberlocations', $mapper->getMmp());
     }
 
     public function delAction()
     {
-        if ($this->getRequest()->isSecure()) {
+        if ($this->getRequest()->isSecure() && $this->getRequest()->getParam('id')) {
             $mapMapper = new MemberMapMapper();
             $mapMapper->delete($this->getRequest()->getParam('id'));
 
@@ -58,5 +58,4 @@ class Index extends Admin
 
         $this->redirect(['action' => 'index']);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -13,7 +14,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.4.0',
+        'version' => '1.4.1',
         'icon_small' => 'fa-solid fa-map-location-dot',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -48,7 +49,7 @@ class Config extends \Ilch\Config\Install
         $databaseConfig->delete('map_service');
     }
 
-    public function getInstallSql()
+    public function getInstallSql(): string
     {
         return 'CREATE TABLE IF NOT EXISTS `[prefix]_membermap` (
             `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -65,7 +66,7 @@ class Config extends \Ilch\Config\Install
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;';
     }
 
-    public function getUpdate($installedVersion)
+    public function getUpdate(string $installedVersion): string
     {
         switch ($installedVersion) {
             case "1.0.0":
@@ -90,7 +91,7 @@ class Config extends \Ilch\Config\Install
                 // no break
             case "1.3.0":
                 // Update description
-                foreach($this->config['languages'] as $key => $value) {
+                foreach ($this->config['languages'] as $key => $value) {
                     $this->db()->query(sprintf("UPDATE `[prefix]_modules_content` SET `name` = '%s', `description` = '%s' WHERE `key` = 'membermap' AND `locale` = '%s';", $value['name'], $value['description'], $key));
                 }
 
@@ -120,7 +121,9 @@ class Config extends \Ilch\Config\Install
 
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD INDEX `FK_[prefix]_membermap_[prefix]_users` (`user_id`) USING BTREE;');
                 $this->db()->query('ALTER TABLE `[prefix]_membermap` ADD CONSTRAINT `FK_[prefix]_membermap_[prefix]_users` FOREIGN KEY (`user_id`) REFERENCES `[prefix]_users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE;');
+                // no break
             case "1.3.1":
         }
+        return '"' . $this->config['key'] . '" Update-function executed.';
     }
 }

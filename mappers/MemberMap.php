@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -19,7 +20,7 @@ class MemberMap extends \Ilch\Mapper
      * @param Pagination|null $pagination
      * @return array|null
      */
-    public function getEntriesBy(array $where = [], array $orderBy = ['g.id' => 'ASC'], Pagination $pagination = null): ?array
+    public function getEntriesBy(array $where = [], array $orderBy = ['g.id' => 'ASC'], ?Pagination $pagination = null): ?array
     {
         $select = $this->db()->select()
         ->fields(['g.id', 'g.user_id', 'g.street', 'g.city', 'g.zip_code', 'g.country_code', 'g.lat', 'g.lng'])
@@ -47,12 +48,12 @@ class MemberMap extends \Ilch\Mapper
         foreach ($resultArray as $mmpRow) {
             $model = new Model();
             $model->setId($mmpRow['id'])
-                ->setUser_Id($mmpRow['user_id'])
+                ->setUserId($mmpRow['user_id'])
                 ->setName($mmpRow['name'] ?? '')
                 ->setStreet($mmpRow['street'] ?? '')
                 ->setCity($mmpRow['city'])
-                ->setZip_code($mmpRow['zip_code'])
-                ->setCountry_code($mmpRow['country_code'])
+                ->setZipcode($mmpRow['zip_code'])
+                ->setCountryCode($mmpRow['country_code'])
                 ->setLat($mmpRow['lat'])
                 ->setLng($mmpRow['lng']);
             $mmp[] = $model;
@@ -96,19 +97,19 @@ class MemberMap extends \Ilch\Mapper
     public function save(Model $model): int
     {
         $fields = [
-            'user_id' => $model->getUser_Id(),
+            'user_id' => $model->getUserId(),
             'street' => $model->getStreet(),
             'city' => $model->getCity(),
-            'zip_code' => $model->getZip_code(),
-            'country_code' => $model->getCountry_code(),
+            'zip_code' => $model->getZipCode(),
+            'country_code' => $model->getCountryCode(),
             'lat' => $model->getLat(),
             'lng' => $model->getLng()
         ];
 
-        $model = $this->getMmapByID($model->getUser_Id());
+        $model = $this->getMmapByID($model->getUserId());
 
         if ($model) {
-            $user_id = $model->getUser_Id();
+            $user_id = $model->getUserId();
             $this->db()->update('membermap')
                 ->values($fields)
                 ->where(['user_id' => $user_id])
@@ -130,26 +131,51 @@ class MemberMap extends \Ilch\Mapper
      */
     public function makeLatLng(Model $model): Model
     {
-        $street = '';
+        $fullAddress = '';
         if ($model->getStreet() != "") {
-            $street			= $model->getStreet();
-            $street			= strtolower($street);
-            $street			= str_replace(array('ä','ü','ö','ß'), array('ae', 'ue', 'oe', 'ss'), $street );
-            $street			= preg_replace("/[^a-z0-9\_\s]/", "", $street);
-            $street			= str_replace( array(' ', '--'), array('-', '-'), $street );
+            $fullAddress         = $model->getStreet();
+            $fullAddress         = strtolower($fullAddress);
+            $fullAddress         = str_replace(['Str.', 'str.'], ['Straße', 'straße'], $fullAddress);
         }
-        $zip_code           = $model->getZip_code();
+        $zip_code           = $model->getZipCode();
         $city               = $model->getCity();
-        $country_code       = $model->getCountry_code();
+        $country_code       = $model->getCountryCode();
 
-        $url = 'https://nominatim.openstreetmap.org/search.php?' . ($street ? 'street=' . urlencode($street) : '') . '&city=' . urlencode($city).'&country=' . urlencode($country_code) . '&postalcode=' . urlencode($zip_code) . '&format=jsonv2';
+        $output = null;
+        if (!empty($fullAddress) && !empty($zip_code) && !empty($city) && !empty($country_code)) {
+            preg_match('/^(.*?)(\s+\d+.*)$/', $fullAddress, $matches);
 
-        $json = url_get_contents($url, false);
-        $output = json_decode($json, true);
+            if (count($matches) === 3) {
+                $street = $matches[1];
+                $housenumber = trim($matches[2]);
 
-        if (isset($output[0])) {
-            $model->setLat($output[0]['lat'])
-                ->setLng($output[0]['lon']);
+                $query = sprintf(
+                    '[out:json];area["name"="%s"]->.searchArea;way["addr:street"~"%s",i]["addr:housenumber"="%s"]["addr:postcode"="%s"](area.searchArea);out center;',
+                    $city,
+                    $street,
+                    $housenumber,
+                    $zip_code
+                );
+            } else {
+                $street = $fullAddress;
+
+                $query = sprintf(
+                    '[out:json];area["name"="%s"]->.searchArea;way["addr:street"~"%s",i]["addr:postcode"="%s"](area.searchArea);out center;',
+                    $city,
+                    $street,
+                    $zip_code
+                );
+            }
+
+            $url = 'https://overpass-api.de/api/interpreter?data=' . urlencode($query);
+
+            $json = url_get_contents($url);
+            $output = json_decode($json, true);
+        }
+
+        if (isset($output['elements'][0]['center'])) {
+            $model->setLat($output['elements'][0]['center']['lat'])
+                ->setLng($output['elements'][0]['center']['lon']);
         } else {
             $model->setLat('')
                 ->setLng('');

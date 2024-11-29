@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -18,7 +19,7 @@ class Index extends Frontend
         $this->getLayout()->getTitle()
             ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index']);
+            ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index']);
     }
 
     public function mapAction()
@@ -26,8 +27,8 @@ class Index extends Frontend
         $this->getLayout()->getTitle()
             ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
-                ->add($this->getTranslator()->trans('mapView'), ['controller' => 'index', 'action' => 'map']);
+            ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
+            ->add($this->getTranslator()->trans('mapView'), ['controller' => 'index', 'action' => 'map']);
 
         $mapper = new MemberMapMapper();
 
@@ -50,8 +51,8 @@ class Index extends Frontend
         $this->getLayout()->getTitle()
             ->add($this->getTranslator()->trans('membermap'));
         $this->getLayout()->getHmenu()
-                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
-                ->add($this->getTranslator()->trans('mapEntry'), ['controller' => 'index', 'action' => 'treat']);
+            ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
+            ->add($this->getTranslator()->trans('mapEntry'), ['controller' => 'index', 'action' => 'treat']);
 
         if (!$this->getUser()) {
             $this->redirect()
@@ -64,7 +65,7 @@ class Index extends Frontend
         $model = $mapper->getMmapByID($this->getUser()->getId());
         if (!$model) {
             $model = new MemberMapModel();
-            $model->setUser_Id($this->getUser()->getId());
+            $model->setUserId($this->getUser()->getId());
         }
         $this->getView()->set('membermap', $model);
 
@@ -78,8 +79,8 @@ class Index extends Frontend
             if ($validation->isValid()) {
                 $model->setStreet($this->getRequest()->getPost('street'))
                     ->setCity($this->getRequest()->getPost('city'))
-                    ->setZip_code($this->getRequest()->getPost('zip_code'))
-                    ->setCountry_code($this->getRequest()->getPost('country_code'));
+                    ->setZipcode($this->getRequest()->getPost('zip_code'))
+                    ->setCountryCode($this->getRequest()->getPost('country_code'));
                 $model = $mapper->makeLatLng($model);
                 $mapper->save($model);
 
@@ -98,14 +99,14 @@ class Index extends Frontend
 
     public function delAction()
     {
-        if ($this->getRequest()->isSecure()) {
+        if ($this->getRequest()->isSecure() && $this->getRequest()->getParam('user_id')) {
             $mapper = new MemberMapMapper();
 
             $mapper->deleteUser($this->getRequest()->getParam('user_id'));
 
             $this->redirect()
-            ->withMessage('deleteSuccess')
-            ->to(['action' => 'index']);
+                ->withMessage('deleteSuccess')
+                ->to(['action' => 'index']);
         }
 
         $this->redirect(['action' => 'index']);

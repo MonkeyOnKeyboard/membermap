@@ -1,4 +1,8 @@
-<?php if ($this->get('memberlocations')) : ?>
+<?php
+
+/** @var \Ilch\View $this */
+
+if ($this->get('memberlocations')) : ?>
 <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 <!-- Replace the value of the key parameter with your own API key. -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=urlencode($this->get('apiKey')) ?>&callback=initialize&sensor=false">
@@ -8,9 +12,10 @@
 
 <?php
 $out_array = [];
+/** @var Modules\Membermap\Models\MemberMap $location */
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getLat()) {
-        $userlink     =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
+        $userlink     =   $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUserid()]);
         $name         =   $location->getName();
         $lat          =   $location->getLat();
         $lng          =   $location->getLng();
@@ -38,11 +43,10 @@ foreach ($this->get('memberlocations') as $location) {
                 center: new google.maps.LatLng(51.1642292, 10.4541194)
             };
 
-        var locations = [<?php 
-                foreach ($out_array as $city) {
-                    echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']"; echo ", ";
-                }
-                ?>
+        var locations = [<?php foreach ($out_array as $city) {
+                            echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']";
+                            echo ", ";
+                        } ?>
             ];
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         var infowindow = new google.maps.InfoWindow();
