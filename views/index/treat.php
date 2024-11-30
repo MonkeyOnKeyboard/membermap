@@ -1,4 +1,8 @@
 <?php
+
+/** @var \Ilch\View $this */
+
+/** @var Modules\Membermap\Models\MemberMap $membermap */
 $membermap = $this->get('membermap');
 ?>
 <h1><?=($membermap->getCity()) ? $this->getTrans('edit') : $this->getTrans('add') ?></h1>
@@ -37,7 +41,7 @@ $membermap = $this->get('membermap');
                    type="text"
                    id="zip_code"
                    name="zip_code"
-                   value="<?=$this->escape($this->originalInput('zip_code', $membermap->getZip_code())) ?>" />
+                   value="<?=$this->escape($this->originalInput('zip_code', $membermap->getZipCode())) ?>" />
         </div>
     </div>
     <div class="row mb-3<?=$this->validation()->hasError('country_code') ? ' has-error' : '' ?>">
@@ -49,12 +53,12 @@ $membermap = $this->get('membermap');
                    type="text"
                    id="country_code"
                    name="country_code"
-                   value="<?=$this->escape($this->originalInput('country_code', $membermap->getCountry_code())) ?>" />
+                   value="<?=$this->escape($this->originalInput('country_code', $membermap->getCountryCode())) ?>" />
         </div>
         <div class="col-lg-8 offset-lg-4"><?=$this->getTrans('cc_search') ?></div>
     </div>
 
-    <a style="float:right;" href="<?=$this->getUrl(['action' => 'del', 'user_id' => ($membermap)->getUser_id()], null, true) ?>" class="btn btn-danger" role="button"><?=$this->getTrans('delete') ?></a>
+    <a style="float:right;" href="<?=$this->getUrl(['action' => 'del', 'user_id' => ($membermap)->getUserid()], null, true) ?>" class="btn btn-danger" role="button"><?=$this->getTrans('delete') ?></a>
     <?=($membermap->getCity() != '') ?  $this->getSaveBar('updateButton') : $this->getSaveBar('add') ?>
 
 </form>

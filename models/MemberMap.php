@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -58,7 +59,7 @@ class MemberMap extends \Ilch\Model
      * @var string
      */
     protected $country_code;
-    
+
     /**
      * lat.
      *
@@ -66,11 +67,11 @@ class MemberMap extends \Ilch\Model
      */
     protected $lat;
 
-     /**
-     * lng.
-     *
-     * @var string
-     */
+    /**
+    * lng.
+    *
+    * @var string
+    */
     protected $lng;
 
     /**
@@ -101,7 +102,7 @@ class MemberMap extends \Ilch\Model
      * @param int $user_id
      * @return $this
      */
-    public function setUser_Id(int $user_id): MemberMap
+    public function setUserId(int $user_id): MemberMap
     {
         $this->user_id = $user_id;
         return $this;
@@ -112,7 +113,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return int
      */
-    public function getUser_Id(): int
+    public function getUserId(): int
     {
         return $this->user_id;
     }
@@ -192,7 +193,7 @@ class MemberMap extends \Ilch\Model
      * @param string $zip_code
      * @return $this
      */
-    public function setZip_code(string $zip_code): MemberMap
+    public function setZipcode(string $zip_code): MemberMap
     {
         $this->zip_code = $zip_code;
         return $this;
@@ -203,7 +204,7 @@ class MemberMap extends \Ilch\Model
      *
      * @return string|null
      */
-    public function getZip_code(): ?string
+    public function getZipCode(): ?string
     {
         return $this->zip_code;
     }
@@ -214,7 +215,7 @@ class MemberMap extends \Ilch\Model
      * @param string $country_code
      * @return $this
      */
-    public function setCountry_code(string $country_code): MemberMap
+    public function setCountryCode(string $country_code): MemberMap
     {
         $this->country_code = $country_code;
         return $this;
@@ -225,11 +226,11 @@ class MemberMap extends \Ilch\Model
      *
      * @return string|null
      */
-    public function getCountry_code(): ?string
+    public function getCountryCode(): ?string
     {
         return $this->country_code;
     }
-    
+
     /**
      * Set lat.
      *
@@ -242,7 +243,7 @@ class MemberMap extends \Ilch\Model
         $this->lat = $lat;
         return $this;
     }
-    
+
     /**
      * Get lat.
      *
@@ -253,7 +254,7 @@ class MemberMap extends \Ilch\Model
     {
         return $this->lat;
     }
-    
+
     /**
      * Set lng.
      *
@@ -266,7 +267,7 @@ class MemberMap extends \Ilch\Model
         $this->lng = $lng;
         return $this;
     }
-    
+
     /**
      * Get lng.
      *

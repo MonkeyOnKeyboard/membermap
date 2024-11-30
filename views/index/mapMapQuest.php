@@ -1,4 +1,8 @@
-<?php if ($this->get('memberlocations')) : ?>
+<?php
+
+/** @var \Ilch\View $this */
+
+if ($this->get('memberlocations')) : ?>
 <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
 <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
 
@@ -9,11 +13,12 @@
 <?php 
 $city_array = [];
 $out_array = [];
+/** @var Modules\Membermap\Models\MemberMap $location */
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getCity() != "") {
         $name = $location->getName();
-        $zip_code = $location->getZip_code();
-        $country_code = $location->getCountry_code();
+        $zip_code = $location->getZipCode();
+        $country_code = $location->getCountryCode();
         if ($location->getStreet() != "") {
             $address = $location->getStreet() . ', ' . $location->getCity();
         } else {
@@ -42,11 +47,9 @@ foreach ($this->get('memberlocations') as $location) {
         L.mapquest.key = '<?php echo $this->get('apiKey');?>';
 
         var geocoder = L.mapquest.geocoding();
-        geocoder.geocode([<?php 
-            foreach ($out_array as $city) {
-              echo "'$city[address], $city[zip_code], $city[country_code]'"; echo ", ";
-          }
-        ?>], createMap);
+        geocoder.geocode([<?php foreach ($out_array as $city) {
+                              echo "'$city[address], $city[zip_code], $city[country_code]'"; echo ", ";
+                          } ?>], createMap);
 
         function createMap(error, response) {
             // Initialize the Map

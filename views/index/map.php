@@ -1,4 +1,8 @@
-<?php if (!$this->get('apiKey')) : ?>
+<?php
+
+/** @var \Ilch\View $this */
+
+if (!$this->get('apiKey')) : ?>
 <div class="alert alert-danger">
     <?=$this->getTrans('noApiKey') ?>
 </div>

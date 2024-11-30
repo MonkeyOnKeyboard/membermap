@@ -1,3 +1,7 @@
+<?php
+
+/** @var \Ilch\View $this */
+?>
 <form method="POST">
     <?=$this->getTokenField() ?>
     <div class="row mb-3">

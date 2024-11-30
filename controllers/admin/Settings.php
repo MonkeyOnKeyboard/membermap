@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright MonkeyOnKeyboard
  * @package ilch
@@ -28,8 +29,7 @@ class Settings extends Admin
             ]
         ];
 
-        $this->getLayout()->addMenu
-        (
+        $this->getLayout()->addMenu(
             'membermap',
             $items
         );
@@ -38,10 +38,10 @@ class Settings extends Admin
     public function indexAction()
     {
         $this->getLayout()->getAdminHmenu()
-                ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
-                ->add($this->getTranslator()->trans('settings'), ['controller' => 'settings', 'action' => 'index']);
+            ->add($this->getTranslator()->trans('membermap'), ['controller' => 'index', 'action' => 'index'])
+            ->add($this->getTranslator()->trans('settings'), ['controller' => 'settings', 'action' => 'index']);
 
-        if ($this->getRequest()->isPost() ) {
+        if ($this->getRequest()->isPost()) {
             $validation = Validation::create($this->getRequest()->getPost(), [
                 'service' => 'required|numeric|integer|min:1|max:3',
                 'apiKey' => 'required',

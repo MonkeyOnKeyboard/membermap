@@ -1,4 +1,8 @@
-<?php if ($this->get('memberlocations')) { ?>
+<?php
+
+/** @var \Ilch\View $this */
+
+if ($this->get('memberlocations')) { ?>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
@@ -7,12 +11,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script> 
 
 <div id='map' style='width: 100%; height:530px;'></div>
-
 <?php
 $out_array = [];
+/** @var Modules\Membermap\Models\MemberMap $location */
 foreach ($this->get('memberlocations') as $location) {
     if ($location->getLat()) {
-        $userlink     = $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUser_id()]);
+        $userlink     = $this->getUrl(['module' => 'user', 'controller' => 'profil', 'action' => 'index', 'user' => $location->getUserid()]);
         $name         = $location->getName();
         $lat          = $location->getLat();
         $lng          = $location->getLng();
@@ -44,12 +48,9 @@ foreach ($this->get('memberlocations') as $location) {
         });
     }
 
-    var locations = [
-        <?php 
-        foreach ($out_array as $city) {
-        echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']"; echo ", ";
-        }
-        ?>
+    var locations = [<?php foreach ($out_array as $city) {
+                         echo "[$city[lat], $city[lng], '".$city["names"]."', '".$city["user_link"]."']"; echo ", ";
+                     } ?>
     ];
 
     var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
