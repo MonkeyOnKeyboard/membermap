@@ -136,17 +136,20 @@ class MemberMap extends \Ilch\Mapper
             $fullAddress         = $model->getStreet();
             $fullAddress         = strtolower($fullAddress);
             $fullAddress         = str_replace(['Str.', 'str.'], ['Straße', 'straße'], $fullAddress);
+            $fullAddress         = ucfirst($fullAddress);
         }
         $zip_code           = $model->getZipCode();
         $city               = $model->getCity();
         $country_code       = $model->getCountryCode();
 
+        $street = '';
+        $housenumber = '';
+
         $output = null;
         if (!empty($fullAddress) && !empty($zip_code) && !empty($city) && !empty($country_code)) {
-            preg_match('/^(.*?)(\s+\d+.*)$/', $fullAddress, $matches);
-
+            preg_match('/^(.*\S)\s+(\d+\s*[a-zA-Z\/\-]*)$/', $fullAddress, $matches);
             if (count($matches) === 3) {
-                $street = $matches[1];
+                $street = trim($matches[1]);
                 $housenumber = trim($matches[2]);
 
                 $query = sprintf(
@@ -171,6 +174,12 @@ class MemberMap extends \Ilch\Mapper
 
             $json = url_get_contents($url);
             $output = json_decode($json, true);
+
+            if (!isset($output['elements'][0]['center']) && !empty($housenumber)) {
+                $model->setStreet($street);
+                $model = $this->makeLatLng($model);
+                return $model;
+            }
         }
 
         if (isset($output['elements'][0]['center'])) {

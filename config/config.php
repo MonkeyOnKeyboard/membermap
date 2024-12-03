@@ -14,7 +14,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.4.1',
+        'version' => '1.4.2',
         'icon_small' => 'fa-solid fa-map-location-dot',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -128,6 +128,8 @@ class Config extends \Ilch\Config\Install
                 $this->db()->delete()->from('membermap')
                     ->where(['street <>' => '', 'lat' => ''])
                     ->execute();
+                // no break
+            case "1.4.1":
                 // no break
         }
         return '"' . $this->config['key'] . '" Update-function executed.';

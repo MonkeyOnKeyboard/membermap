@@ -71,9 +71,10 @@ class Index extends Frontend
 
         if ($this->getRequest()->isPost()) {
             $validation = Validation::create($this->getRequest()->getPost(), [
-                'city' => 'required',
-                'zip_code' => 'required',
-                'country_code' => 'required'
+                'street'        => 'required',
+                'city'          => 'required',
+                'zip_code'      => 'required',
+                'country_code'  => 'required'
             ]);
 
             if ($validation->isValid()) {
