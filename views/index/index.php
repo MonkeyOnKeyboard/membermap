@@ -5,7 +5,7 @@
 <form method="POST" action="">
     <?=$this->getTokenField() ?>
 
-    <div align="center">
+    <div class="text-center">
         <?php if ($this->getUser()) { ?>
         <a class="btn btn-outline-secondary" href="<?= $this->getUrl(['action' => 'treat'])?>" title="<?= $this->getTrans('mapEntry')?>"><?= $this->getTrans('mapEntry')?></a> &nbsp;
         <?php } ?>
