@@ -7,7 +7,13 @@ if ($this->get('memberlocations')) : ?>
 <!-- Replace the value of the key parameter with your own API key. -->
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=urlencode($this->get('apiKey')) ?>&callback=initialize&sensor=false">
 </script>
-
+<div class="text-center">
+    <?php if ($this->getUser()) { ?>
+    <a class="btn btn-outline-secondary" href="<?= $this->getUrl(['action' => 'treat'])?>" title="<?= $this->getTrans('mapEntry')?>"><?= $this->getTrans('mapEntry')?></a> &nbsp;
+    <?php } ?>
+    <a class="btn btn-outline-secondary" href="<?= $this->getUrl(['action' => 'map'])?>" title="<?= $this->getTrans('mapView')?>"><?= $this->getTrans('mapView')?></a>
+</div>
+<br>
 <div id="map" style='width: 100%; height:530px;'></div>
 
 <?php
