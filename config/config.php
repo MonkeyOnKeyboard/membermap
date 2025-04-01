@@ -14,7 +14,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.4.2',
+        'version' => '1.4.3',
         'icon_small' => 'fa-solid fa-map-location-dot',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -47,6 +47,7 @@ class Config extends \Ilch\Config\Install
         $databaseConfig = new Database($this->db());
         $databaseConfig->delete('map_apikey');
         $databaseConfig->delete('map_service');
+        $this->db()->queryMulti("DELETE FROM `[prefix]_user_menu_settings_links` WHERE `key` = 'membermap/index/treat';");
     }
 
     public function getInstallSql(): string
@@ -63,7 +64,11 @@ class Config extends \Ilch\Config\Install
             PRIMARY KEY (`id`) USING BTREE,
             INDEX `FK_[prefix]_membermap_[prefix]_users` (`user_id`) USING BTREE,
             CONSTRAINT `FK_[prefix]_membermap_[prefix]_users` FOREIGN KEY (`user_id`) REFERENCES `[prefix]_users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;';
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
+        
+        INSERT INTO `[prefix]_user_menu_settings_links` (`key`, `locale`, `description`, `name`) VALUES
+            ("membermap/index/treat", "de_DE", "Hier kannst du deine Membermap daten bearbeiten.", "Membermap"),
+            ("membermap/index/treat", "en_EN", "Here you can manage your Membermap.", "Membermap");';
     }
 
     public function getUpdate(string $installedVersion): string
@@ -131,6 +136,8 @@ class Config extends \Ilch\Config\Install
                 // no break
             case "1.4.1":
                 // no break
+            case "1.4.2":
+                $this->db()->query('INSERT INTO `[prefix]_user_menu_settings_links` (`key`, `locale`, `description`, `name`) VALUES ("membermap/index/treat", "de_DE", "Hier kannst du deine Membermap daten bearbeiten.", "Membermap"), ("membermap/index/treat", "en_EN", "Here you can manage your Membermap.", "Membermap");');
         }
         return '"' . $this->config['key'] . '" Update-function executed.';
     }
