@@ -82,8 +82,27 @@ class Index extends Frontend
                     ->setCity($this->getRequest()->getPost('city'))
                     ->setZipcode($this->getRequest()->getPost('zip_code'))
                     ->setCountryCode($this->getRequest()->getPost('country_code'));
-                $model = $mapper->makeLatLng($model);
-                $mapper->save($model);
+
+                if ((int)$this->getConfig()->get('map_service') === 2) {
+                    $address = $this->getRequest()->getPost('street').",". $this->getRequest()->getPost('zip_code')." ".$this->getRequest()->getPost('city').",". $this->getRequest()->getPost('country_code');
+                    $apiKey = (string)$this->getConfig()->get('map_apikey');
+                    $coordinates = $mapper->getLatLngFromAddress($address, $apiKey);
+
+                    if ($coordinates) {
+                        $model->setLat($coordinates['lat'])
+                            ->setLng($coordinates['lng']);
+                    } else {
+                        echo "Koordinaten konnten nicht ermittelt werden.";
+                    }
+
+                    $mapper->saveGMaps($model);
+
+
+                } else {
+                    $model = $mapper->makeLatLng($model);
+                    $mapper->save($model);
+                }
+                
 
                 $this->redirect()
                     ->withMessage('saveSuccess')
