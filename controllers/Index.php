@@ -78,12 +78,72 @@ class Index extends Frontend
             ]);
 
             if ($validation->isValid()) {
+                
+                $street=$this->getRequest()->getPost('street');
+                $postalCode=$this->getRequest()->getPost('zip_code');
+                $city=$this->getRequest()->getPost('city');
+                $countryCode=$this->getRequest()->getPost('country_code');
+
+                /*
                 $model->setStreet($this->getRequest()->getPost('street'))
                     ->setCity($this->getRequest()->getPost('city'))
                     ->setZipcode($this->getRequest()->getPost('zip_code'))
                     ->setCountryCode($this->getRequest()->getPost('country_code'));
-                $model = $mapper->makeLatLng($model);
-                $mapper->save($model);
+                */
+                if ((int)$this->getConfig()->get('map_service') === 2) {
+
+                    /*
+                    echo "<hr>";
+                    echo '<pre>';
+                    print_r($street." | ".$postalCode." | ".$city." | ".$countryCode);
+                    echo '</pre>';
+                    */
+
+                    $apiKey = (string)$this->getConfig()->get('map_apikey');
+
+                    $address = "{$street}, {$postalCode} {$city}, {$countryCode}";
+                    
+                    /*
+                    echo "<hr>";
+                    echo '<pre>';
+                    print_r($address);
+                    echo '</pre>';
+                    */
+
+                    $coords = $mapper->getLatLngFromAddress($address, $apiKey);
+                    
+                    /*
+                    echo "<hr>";
+                    echo '<pre>';
+                    print_r($coords);
+                    echo '</pre>';
+                    */
+
+                    $model->setStreet($street)
+                         ->setCity($city)
+                        ->setZipcode($postalCode)
+                        ->setCountryCode($countryCode)
+                        ->setLat($coords['lat'])
+                        ->setLng($coords['lng']);
+                    /*    
+                    echo "<hr>";
+                    echo '<pre>';
+                    print_r($model);
+                    echo '</pre>';
+                    die();
+                    */
+                    $mapper->save($model);
+
+
+                } else {
+                    $model->setStreet($street)
+                         ->setCity($city)
+                        ->setZipcode($postalCode)
+                        ->setCountryCode($countryCode);
+                    $model = $mapper->makeLatLng($model);
+                    $mapper->save($model);
+                }
+                
 
                 $this->redirect()
                     ->withMessage('saveSuccess')

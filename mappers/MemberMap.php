@@ -169,11 +169,13 @@ class MemberMap extends \Ilch\Mapper
                     $zip_code
                 );
             }
+           
 
             $url = 'https://overpass-api.de/api/interpreter?data=' . urlencode($query);
 
             $json = url_get_contents($url);
             $output = json_decode($json, true);
+            
 
             if (!isset($output['elements'][0]['center']) && !empty($housenumber)) {
                 $model->setStreet($street);
@@ -192,6 +194,79 @@ class MemberMap extends \Ilch\Mapper
 
         return $model;
     }
+
+     /**
+     * get lat/long for the Google Maps.
+     *
+     * @param Model $model
+     * @return Model
+     */
+    public function getLatLngFromAddress($address, $apiKey) {
+    // Adresse URL-kodieren
+    $encodedAddress = urlencode($address);
+
+    // API-URL zusammenbauen
+    $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$encodedAddress}&key={$apiKey}";
+
+    // Anfrage senden
+    $response = file_get_contents($url);
+    if ($response === FALSE) {
+        return null;
+    }
+
+    // JSON-Daten dekodieren
+    $data = json_decode($response, true);
+
+    // Prüfen, ob Ergebnisse vorhanden sind
+    if ($data['status'] === 'OK') {
+        $location = $data['results'][0]['geometry']['location'];
+        return [
+            'lat' => $location['lat'],
+            'lng' => $location['lng']
+        ];
+    } else {
+        return null;
+    }
+}
+
+
+
+    /**
+     * Inserts or updates entry for Google Maps.
+     *
+     * @param Model $model
+     * @return int
+     */
+    public function saveGMaps(Model $model): int
+    {
+        $fields = [
+            'user_id' => $model->getUserId(),
+            'street' => $model->getStreet(),
+            'city' => $model->getCity(),
+            'zip_code' => $model->getZipCode(),
+            'country_code' => $model->getCountryCode(),
+            'lat' => $model->getLat(),
+            'lng' => $model->getLng()
+        ];
+
+        $model = $this->getMmapByID($model->getUserId());
+
+        if ($model) {
+            $user_id = $model->getUserId();
+            $this->db()->update('membermap')
+                ->values($fields)
+                ->where(['user_id' => $user_id])
+                ->execute();
+        } else {
+            $user_id = $this->db()->insert('membermap')
+                ->values($fields)
+                ->execute();
+        }
+
+        return $user_id;
+    }
+
+
 
     /**
      * Deletes the entry.
