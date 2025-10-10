@@ -193,6 +193,78 @@ class MemberMap extends \Ilch\Mapper
         return $model;
     }
 
+     /**
+     * get lat/long for the Google Maps.
+     *
+     * @param Model $model
+     * @return Model
+     */
+    function geocodeV4WithApiKey($address, $apiKey) {
+    $url = "https://geocoding.googleapis.com/v4/geocoding:geocode?key={$apiKey}";
+
+    $payload = json_encode([
+        "address" => $address
+    ]);
+
+    $headers = [
+        "Content-Type: application/json"
+    ];
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if (isset($data['results'][0]['geometry']['location'])) {
+        $location = $data['results'][0]['geometry']['location'];
+        return [
+            'lat' => $location['lat'],
+            'lng' => $location['lng']
+        ];
+    } else {
+        return null;
+    }
+}
+
+    /**
+     * Inserts or updates entry for Google Maps.
+     *
+     * @param Model $model
+     * @return int
+     */
+    public function saveGMaps(Model $model): int
+    {
+        $fields = [
+            'user_id' => $model->getUserId(),
+            'lat' => $model->getLat(),
+            'lng' => $model->getLng()
+        ];
+
+        $model = $this->getMmapByID($model->getUserId());
+
+        if ($model) {
+            $user_id = $model->getUserId();
+            $this->db()->update('membermap')
+                ->values($fields)
+                ->where(['user_id' => $user_id])
+                ->execute();
+        } else {
+            $user_id = $this->db()->insert('membermap')
+                ->values($fields)
+                ->execute();
+        }
+
+        return $user_id;
+    }
+
+
+
     /**
      * Deletes the entry.
      *
