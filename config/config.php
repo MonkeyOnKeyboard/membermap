@@ -14,7 +14,7 @@ class Config extends \Ilch\Config\Install
 {
     public $config = [
         'key' => 'membermap',
-        'version' => '1.4.3',
+        'version' => '1.4.4',
         'icon_small' => 'fa-solid fa-map-location-dot',
         'author' => 'MonkeyOnKeyboard',
         'languages' => [
@@ -138,6 +138,8 @@ class Config extends \Ilch\Config\Install
                 // no break
             case "1.4.2":
                 $this->db()->query('INSERT INTO `[prefix]_user_menu_settings_links` (`key`, `locale`, `description`, `name`) VALUES ("membermap/index/treat", "de_DE", "Hier kannst du deine Membermap daten bearbeiten.", "Membermap"), ("membermap/index/treat", "en_EN", "Here you can manage your Membermap.", "Membermap");');
+             case "1.4.3":
+                // no break
         }
         return '"' . $this->config['key'] . '" Update-function executed.';
     }
