@@ -195,6 +195,40 @@ class MemberMap extends \Ilch\Mapper
         return $model;
     }
 
+
+    public function getCoordinatesFromAddress($address, $apiKey) {
+        // URL für die Nominatim API
+        $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query([
+            'q' => $address,
+            'format' => 'json',
+            'limit' => 1
+        ]);
+
+        // cURL initialisieren
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "{$apiKey}/1.0"); // Wichtig: User-Agent setzen!
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        // JSON dekodieren
+        $data = json_decode($response, true);
+
+        // Koordinaten extrahieren
+        if (!empty($data)) {
+            return [
+                'lat' => $data[0]['lat'],
+                'lon' => $data[0]['lon']
+            ];
+        } else {
+            return null; // Keine Ergebnisse gefunden
+        }
+    }
+
+
+
      /**
      * get lat/long for the Google Maps.
      *
@@ -207,7 +241,7 @@ class MemberMap extends \Ilch\Mapper
 
     // API-URL zusammenbauen
     $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$encodedAddress}&key={$apiKey}";
-
+    
     // Anfrage senden
     $response = file_get_contents($url);
     if ($response === FALSE) {

@@ -136,11 +136,19 @@ class Index extends Frontend
 
 
                 } else {
+                    $apiKey = (string)$this->getConfig()->get('map_apikey');
+                    $address = "{$street}, {$postalCode} {$city}, {$countryCode}";
+                    $coords = $mapper->getCoordinatesFromAddress($address, $apiKey);
+                    
                     $model->setStreet($street)
                          ->setCity($city)
                         ->setZipcode($postalCode)
-                        ->setCountryCode($countryCode);
-                    $model = $mapper->makeLatLng($model);
+                        ->setCountryCode($countryCode)
+                        ->setLat($coords['lat'])
+                        ->setLng($coords['lon']);
+
+                    //$model = $mapper->makeLatLng($model);
+                    
                     $mapper->save($model);
                 }
                 
